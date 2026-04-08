@@ -296,3 +296,296 @@ form {
 .social-btn.google:hover {
     background-color: #F8F9FA;
 }
+
+/* --- Home View Styles --- */
+.app-layout {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    max-height: 90vh;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.app-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    z-index: 10;
+}
+
+.app-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px; /* Space for bottom nav */
+}
+
+/* hide scrollbar for app content if desired, let's keep it clean */
+.app-content::-webkit-scrollbar {
+    width: 6px;
+}
+.app-content::-webkit-scrollbar-thumb {
+    background: #E5E7EB; 
+    border-radius: 10px;
+}
+
+/* Sections */
+section {
+    padding: 24px 20px 0;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-main);
+}
+
+/* Horizontal Scroll */
+.horiz-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px; 
+    margin-right: -20px; 
+    padding-right: 20px; 
+}
+
+.horiz-scroll.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.horiz-scroll.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Cards */
+.credit-card, .mission-card {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 260px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color); /* Add slight border */
+}
+
+.credit-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.credit-amount {
+    margin-bottom: 16px;
+}
+
+.credit-amount .amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.credit-amount .unit {
+    font-size: 14px;
+    color: var(--text-main);
+    margin-left: 4px;
+}
+
+.main-credit {
+    display: flex;
+    flex-direction: column;
+}
+
+.credit-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+.small-btn {
+    padding: 10px 14px;
+    font-size: 13px;
+    background-color: var(--white);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    font-weight: 600;
+    width: auto;
+    margin: 0;
+}
+
+.small-btn:hover {
+    background-color: #F3F4F6;
+}
+
+.small-btn.outline-green {
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.small-btn.outline-green:hover {
+    background-color: var(--primary-green-light);
+}
+
+/* Side Credit (Ranking) */
+.side-credit {
+    min-width: 180px;
+}
+
+.ranking-list {
+    list-style: none;
+    font-size: 13px;
+}
+
+.ranking-list li {
+    background-color: var(--white);
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.ranking-list .rank {
+    font-weight: 700;
+    width: 24px;
+}
+
+.ranking-list .dept {
+    flex: 1;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.ranking-list .score {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.ranking-list .score .unit {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+/* Mission Card */
+.mission-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.mission-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+.mission-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reward {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.mini-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    box-shadow: none;
+    width: auto;
+    margin-bottom: 0;
+    border-radius: 4px;
+}
+
+.mini-btn:hover {
+    background-color: var(--primary-green-dark);
+}
+
+/* 3x3 Grid */
+.item-grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.item-card {
+    text-align: left;
+}
+
+.item-image.placeholder {
+    background-color: #E5E7EB;
+    aspect-ratio: 1; /* Square */
+    margin-bottom: 8px;
+    width: 100%;
+    /* Mockup has sharp corners or slight radius */
+    border-radius: 4px; 
+}
+
+.item-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-price {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: var(--white);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-item {
+    background: #E5E7EB;
+    border: none;
+    color: var(--text-main);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 18px;
+    border-radius: 4px;
+}
+
+.nav-item.active {
+    background: var(--primary-green);
+    color: var(--white);
+}

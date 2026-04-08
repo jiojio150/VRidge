@@ -37,8 +37,8 @@
                         <a href="#" class="forgot-password">비밀번호 찾기</a>
                     </div>
 
-                    <button type="button" class="wire-btn primary">로그인</button>
-                    <button type="button" class="wire-btn secondary outline">게스트로 둘러보기</button>
+                    <button type="button" class="wire-btn primary" onclick="toggleView('home-view')">로그인</button>
+                    <button type="button" class="wire-btn secondary outline" onclick="toggleView('home-view')">게스트로 둘러보기</button>
                 </form>
                 
                 <div class="divider">
@@ -100,6 +100,132 @@
                 <div class="toggle-view mt-6">
                     이미 계정이 있으신가요? <button class="link-btn" onclick="toggleView('login-view')">로그인</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Home View -->
+        <div id="home-view" class="view">
+            <div class="app-layout">
+                <header class="app-header">
+                    <h2>EcoBid</h2>
+                </header>
+                
+                <div class="app-content">
+                    <section class="credit-section">
+                        <div class="horiz-scroll no-scrollbar">
+                            <div class="credit-card main-credit">
+                                <h3>나의 크레딧 잔액</h3>
+                                <div class="credit-amount">
+                                    <span class="amount">1,250</span>
+                                    <span class="unit">크레딧</span>
+                                </div>
+                                <div class="credit-action">
+                                    <button class="wire-btn small-btn outline-green">크레딧 모으러 가기</button>
+                                </div>
+                            </div>
+                            <div class="credit-card side-credit">
+                                <h3>크레딧 총액 학과 순위</h3>
+                                <ul class="ranking-list">
+                                    <li>
+                                        <span class="rank">1</span>
+                                        <span class="dept">컴퓨터공학과</span>
+                                        <span class="score">112,894 <span class="unit">크레딧</span></span>
+                                    </li>
+                                    <li>
+                                        <span class="rank">2</span>
+                                        <span class="dept">디자인테크놀로지학과</span>
+                                        <span class="score">112,894 <span class="unit">크레딧</span></span>
+                                    </li>
+                                    <li>
+                                        <span class="rank">3</span>
+                                        <span class="dept">경영학과</span>
+                                        <span class="score">112,894 <span class="unit">크레딧</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="mission-section">
+                        <h3 class="section-title">추천 미션</h3>
+                        <div class="horiz-scroll no-scrollbar">
+                            <div class="mission-card">
+                                <h4>텀블러 인증</h4>
+                                <p>텀블러 사용 사진을 인증하고 크레딧을 받으세요.</p>
+                                <div class="mission-action">
+                                    <span class="reward">+100 크레딧</span>
+                                    <button class="wire-btn mini-btn">인증하러 가기</button>
+                                </div>
+                            </div>
+                            <div class="mission-card">
+                                <h4>대중교통 인증</h4>
+                                <p>대중교통 사진을 인증하고 크레딧을 받으세요.</p>
+                                <div class="mission-action">
+                                    <span class="reward">+500 크레딧</span>
+                                    <button class="wire-btn mini-btn">인증하러 가기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="item-section">
+                        <h3 class="section-title">나눔 물품 리스트</h3>
+                        <div class="item-grid-3x3">
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">빈티지 조명</h4>
+                                <p class="item-price">2500 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">친환경 수세미</h4>
+                                <p class="item-price">500 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">리유저블 컵</h4>
+                                <p class="item-price">1200 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">에코백</h4>
+                                <p class="item-price">800 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">유리 반찬통</h4>
+                                <p class="item-price">1500 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">스텐 빨대</h4>
+                                <p class="item-price">300 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">대나무 칫솔</h4>
+                                <p class="item-price">400 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">고체 샴푸바</h4>
+                                <p class="item-price">1000 크레딧</p>
+                            </div>
+                            <div class="item-card">
+                                <div class="item-image placeholder"></div>
+                                <h4 class="item-title">천연 비누</h4>
+                                <p class="item-price">600 크레딧</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <nav class="bottom-nav">
+                    <button class="nav-item active"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item"><span class="nav-icon"></span>미션</button>
+                    <button class="nav-item"><span class="nav-icon"></span>채팅</button>
+                    <button class="nav-item"><span class="nav-icon"></span>내정보</button>
+                </nav>
             </div>
         </div>
     </div>
