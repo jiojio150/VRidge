@@ -255,3 +255,44 @@ form {
     text-decoration: underline;
     color: var(--primary-green-dark);
 }
+
+/* Social Login Styles */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-btn {
+    margin-bottom: 0; /* Override general btn margin */
+    box-shadow: none;
+    font-weight: 600;
+}
+
+.social-btn.kakao {
+    background-color: #FEE500;
+    color: #000000;
+}
+
+.social-btn.kakao:hover {
+    background-color: #e6ce00;
+}
+
+.social-btn.naver {
+    background-color: #03C75A;
+    color: #FFFFFF;
+}
+
+.social-btn.naver:hover {
+    background-color: #02b351;
+}
+
+.social-btn.google {
+    background-color: #FFFFFF;
+    color: #3C4043;
+    border: 1px solid var(--border-color);
+}
+
+.social-btn.google:hover {
+    background-color: #F8F9FA;
+}
