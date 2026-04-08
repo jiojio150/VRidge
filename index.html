@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoBid - Wireframe</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Login View -->
+        <div id="login-view" class="view active">
+            <div class="wireframe-card">
+                <div class="logo-box">
+                    <span>LOGO</span>
+                </div>
+                <h1>로그인</h1>
+                <p class="subtitle">서비스를 이용하기 위해 로그인해주세요.</p>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-email">이메일</label>
+                        <input type="email" id="login-email" class="wire-input" placeholder="이메일을 입력하세요" />
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">비밀번호</label>
+                        <input type="password" id="login-password" class="wire-input" placeholder="비밀번호를 입력하세요" />
+                    </div>
+                    
+                    <div class="form-actions">
+                        <label class="checkbox-container">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            아이디 저장
+                        </label>
+                        <a href="#" class="forgot-password">비밀번호 찾기</a>
+                    </div>
+
+                    <button type="button" class="wire-btn primary">로그인</button>
+                    <button type="button" class="wire-btn secondary outline">게스트로 둘러보기</button>
+                </form>
+                
+                <div class="divider">
+                    <span>또는</span>
+                </div>
+
+                <div class="toggle-view">
+                    계정이 없으신가요? <button class="link-btn" onclick="toggleView('signup-view')">회원가입</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup View -->
+        <div id="signup-view" class="view">
+            <div class="wireframe-card">
+                <div class="logo-box">
+                    <span>LOGO</span>
+                </div>
+                <h1>회원가입</h1>
+                <p class="subtitle">새로운 계정을 생성하세요.</p>
+                
+                <form id="signup-form">
+                    <div class="input-group">
+                        <label for="signup-name">이름</label>
+                        <input type="text" id="signup-name" class="wire-input" placeholder="이름을 입력하세요" />
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-email">이메일</label>
+                        <input type="email" id="signup-email" class="wire-input" placeholder="이메일을 입력하세요" />
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">비밀번호</label>
+                        <input type="password" id="signup-password" class="wire-input" placeholder="비밀번호를 생성하세요" />
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password-confirm">비밀번호 확인</label>
+                        <input type="password" id="signup-password-confirm" class="wire-input" placeholder="비밀번호를 다시 입력하세요" />
+                    </div>
+                    
+                    <button type="button" class="wire-btn primary">가입하기</button>
+                </form>
+                
+                <div class="toggle-view mt-6">
+                    이미 계정이 있으신가요? <button class="link-btn" onclick="toggleView('login-view')">로그인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
