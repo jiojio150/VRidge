@@ -589,3 +589,298 @@ section {
     background: var(--primary-green);
     color: var(--white);
 }
+
+/* --- Mission View Styles --- */
+.page-header {
+    padding: 24px 20px 10px;
+}
+
+.bg-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.bg-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.progress-section {
+    padding: 10px 20px 0;
+}
+
+.progress-card {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px; 
+    border: 1px solid var(--border-color);
+}
+
+.progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.progress-val {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.progress-track {
+    height: 10px;
+    background-color: var(--white);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-green);
+    border-radius: 5px;
+    width: 50%;
+}
+
+.mission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 20px 24px;
+}
+
+.mission-list-item {
+    background-color: var(--bg-color);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.mission-list-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.mission-img-placeholder {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-green-light);
+    border-radius: 4px;
+}
+
+.mission-info h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.mission-info p {
+    font-size: 13px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.wire-btn.list-upload-btn {
+    background-color: #E5E7EB;
+    color: var(--text-main);
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: none;
+    border-radius: 4px;
+    margin-bottom: 0;
+}
+
+.wire-btn.list-upload-btn:hover {
+    background-color: #D1D5DB;
+}
+
+/* --- Chat List View Styles --- */
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 24px;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+}
+.chat-list-item:hover {
+    background-color: #F3F4F6;
+}
+
+.chat-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: #D1D5DB;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.chat-list-info {
+    flex: 1;
+}
+
+.chat-list-info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.chat-list-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.chat-arrow {
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+/* --- Chat Detail View Styles --- */
+.flex-center-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-item-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--white);
+}
+
+.chat-item-img {
+    width: 40px;
+    height: 40px;
+    background-color: #D1D5DB;
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+.chat-item-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.chat-item-info p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--white);
+    padding-bottom: 90px; /* space for input area */
+}
+
+.message {
+    display: flex;
+    max-width: 85%;
+}
+
+.message.received {
+    align-self: flex-start;
+}
+
+.message.sent {
+    align-self: flex-end;
+}
+
+.chat-avatar-small {
+    width: 32px;
+    height: 32px;
+    background-color: #D1D5DB;
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.message-bubble {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.message.received .message-bubble {
+    background-color: #F3F4F6;
+    color: var(--text-main);
+}
+
+.message.sent .message-bubble {
+    background-color: #D1D5DB;
+    color: var(--text-main);
+}
+
+.chat-input-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: #F3F4F6;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.chat-add-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--white);
+    border: none;
+    font-size: 20px;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+#chat-input {
+    flex: 1;
+    height: 36px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+}
+#chat-input:focus {
+    outline: none;
+}
+
+.chat-send-btn {
+    width: 32px;
+    height: 32px;
+    background-color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
