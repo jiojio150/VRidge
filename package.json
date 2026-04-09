@@ -1,0 +1,13 @@
+{
+  "name": "ecobid-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=backend",
+    "dev": "npm run start --workspace=backend"
+  }
+}

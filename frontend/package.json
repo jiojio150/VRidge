@@ -1,0 +1,9 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Frontend for ecobid",
+  "scripts": {
+    "start": "echo \"Frontend is served statically by backend or run locally.\"",
+    "dev": "echo \"Dev script for frontend if needed.\""
+  }
+}
