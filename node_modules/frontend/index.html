@@ -111,6 +111,16 @@
                 </header>
                 
                 <div class="app-content">
+                    <section class="attendance-section">
+                        <div class="attendance-card">
+                            <div class="attendance-info">
+                                <h3>오늘의 출석 도장</h3>
+                                <p>매일 출석하고 랜덤 크레딧을 받으세요!</p>
+                            </div>
+                            <button id="stamp-btn" class="stamp-btn" onclick="checkAttendance()">도장 꾹!</button>
+                        </div>
+                    </section>
+                    
                     <section class="credit-section">
                         <div class="horiz-scroll no-scrollbar">
                             <div class="credit-card main-credit">
@@ -162,10 +172,10 @@
                 </div>
 
                 <nav class="bottom-nav">
-                    <button class="nav-item active" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
-                    <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
-                    <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
-                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+                    <button class="nav-item active" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                    <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
                 </nav>
             </div>
         </div>
@@ -202,10 +212,10 @@
                 </div>
 
                 <nav class="bottom-nav">
-                    <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
-                    <button class="nav-item active" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
-                    <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
-                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+                    <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item active" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                    <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
                 </nav>
             </div>
         </div>
@@ -251,10 +261,10 @@
                 </div>
 
                 <nav class="bottom-nav">
-                    <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
-                    <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
-                    <button class="nav-item active" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
-                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+                    <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                    <button class="nav-item active" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
                 </nav>
             </div>
         </div>
@@ -330,14 +340,14 @@
                         <h3 id="mypage-likes-count">0</h3>
                         <p>마음에 들어요</p>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" onclick="showCreditHistory()">
                         <div class="stat-icon">💰</div>
                         <h3>1,250</h3>
                         <p>크레딧</p>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" onclick="showSharedItems()">
                         <div class="stat-icon">📦</div>
-                        <h3>18</h3>
+                        <h3>3</h3>
                         <p>나눔한 물품</p>
                     </div>
                 </section>
@@ -390,10 +400,10 @@
             </div>
 
             <nav class="bottom-nav">
-                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
-                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
-                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
-                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
             </nav>
         </div> <!-- app-layout end -->
     </div> <!-- mypage-view end -->
@@ -420,10 +430,78 @@
             </div>
 
             <nav class="bottom-nav">
-                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
-                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
-                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
-                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Shared Items View -->
+    <div id="shared-items-view" class="view">
+        <div class="app-layout">
+            <header class="app-header">
+                <button class="back-btn" onclick="toggleView('mypage-view')" style="border:none;background:none;font-size:18px;font-weight:bold;cursor:pointer;color:var(--text-main);">&lt;</button>
+                <h2 style="margin-left: 10px;">나눔한 물품</h2>
+            </header>
+            
+            <div class="app-content">
+                <div class="page-header">
+                    <h1 class="bg-title">나눔 목록</h1>
+                    <p class="bg-subtitle">내가 다른 사람들과 나눈 물품들이예요.</p>
+                </div>
+
+                <section class="item-section">
+                    <div id="shared-item-grid" class="item-grid-3x3">
+                        <!-- Shared items will be dynamically loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Credit History View -->
+    <div id="credit-history-view" class="view">
+        <div class="app-layout">
+            <header class="app-header">
+                <button class="back-btn" onclick="toggleView('mypage-view')" style="border:none;background:none;font-size:18px;font-weight:bold;cursor:pointer;color:var(--text-main);">&lt;</button>
+                <h2 style="margin-left: 10px;">크레딧 내역</h2>
+            </header>
+            
+            <div class="app-content">
+                <div class="page-header" style="margin-bottom: 0; padding-bottom: 30px;">
+                    <p class="bg-subtitle" style="margin-bottom: 8px;">현재 보유 크레딧</p>
+                    <h1 class="bg-title" style="font-size: 32px; color: var(--primary-green);">1,250 <span style="font-size: 18px; color: var(--text-main);">크레딧</span></h1>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h3>월간 활동 캘린더</h3>
+                        <span style="font-size: 12px; color: var(--text-muted);">2026.04</span>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid">
+                        <!-- Calendar will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="history-list" id="credit-history-list">
+                    <!-- History items will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
             </nav>
         </div>
     </div>

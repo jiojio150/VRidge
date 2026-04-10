@@ -1151,6 +1151,13 @@ section {
     font-size: 20px;
 }
 
+.item-recipient {
+    font-size: 11px;
+    color: var(--primary-green);
+    margin-top: 4px;
+    font-weight: 600;
+}
+
 .badge-item.earned {
     background-color: var(--primary-green-light);
     border: none;
@@ -1191,6 +1198,58 @@ section {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 3px;
+    color: var(--text-main);
+}
+
+/* Credit History Styles */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 30px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--white);
+    transition: background-color 0.2s;
+}
+
+.history-item:active {
+    background-color: var(--bg-color);
+}
+
+.history-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.history-date {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.history-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.history-amount {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.history-amount.earn {
+    color: var(--primary-green);
+}
+
+.history-amount.spend {
     color: var(--text-main);
 }
 
@@ -1453,4 +1512,133 @@ section {
 .chat-action-btn:hover {
     background-color: var(--primary-green-dark);
 }
+
+/* Calendar & Attendance Styles */
+.attendance-section {
+    padding: 0 20px 20px;
+}
+
+.attendance-card {
+    background: linear-gradient(135deg, var(--white) 0%, var(--bg-color) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.attendance-info h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.attendance-info p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.stamp-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-green);
+    background-color: var(--white);
+    color: var(--primary-green);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.stamp-btn:hover {
+    transform: scale(1.05);
+}
+
+.stamp-btn.checked {
+    background-color: var(--primary-green);
+    color: var(--white);
+    border-color: var(--primary-green);
+}
+
+/* Calendar Styles */
+.calendar-container {
+    padding: 24px;
+    background-color: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    margin: 0 24px 24px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.calendar-day-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    position: relative;
+    cursor: default;
+}
+
+.calendar-day.today {
+    background-color: var(--bg-color);
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.calendar-day.inactive {
+    color: var(--border-color);
+}
+
+.dot-indicators {
+    display: flex;
+    gap: 2px;
+    position: absolute;
+    bottom: 4px;
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+}
+
+.dot.earn { background-color: var(--primary-green); }
+.dot.spend { background-color: var(--text-main); }
 

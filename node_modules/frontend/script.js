@@ -8,6 +8,14 @@ const missions = [
 let likedItemIds = JSON.parse(localStorage.getItem('likedItemIds')) || [];
 let currentProductId = null;
 let completedMissionIds = JSON.parse(localStorage.getItem('completedMissionIds')) || [];
+let attendanceDates = JSON.parse(localStorage.getItem('attendanceDates')) || [];
+
+const creditHistory = [
+    { id: 0, date: "2026.04.10", title: "텀블러 인증 미션 완료", amount: 500, type: "earn" },
+    { id: 1, date: "2026.04.09", title: "빈티지 조명 나눔 완료", amount: 2500, type: "earn" },
+    { id: 2, date: "2026.04.08", title: "리유저블 컵 입찰", amount: -1200, type: "spend" },
+    { id: 3, date: "2026.04.08", title: "에코백 나눔 완료", amount: 800, type: "earn" }
+];
 
 window.onload = function() {
     const user = localStorage.getItem('user');
@@ -113,6 +121,8 @@ const products = [
         id: 0,
         title: "빈티지 조명",
         price: "2500",
+        isUserOwned: true,
+        recipientName: "이지오",
         description: "상태 좋은 빈티지 조명입니다. 이사가게 되어 더 이상 필요하지 않아 나눔합니다. 실사용 기간은 1년 정도이며, 따뜻한 노란색 조명이 들어와서 방 분위기를 무드 있게 만들어줍니다. 인하대 정문 쪽에서 직거래 희망합니다!",
         stats: { likes: 12, views: 243, chats: 3 }
     },
@@ -120,6 +130,8 @@ const products = [
         id: 1,
         title: "친환경 수세미",
         price: "500",
+        isUserOwned: true,
+        recipientName: "김애리",
         description: "천연 삼베로 직접 만든 친환경 수세미입니다. 세제 없이도 기름기가 잘 닦이고 미세 플라스틱 걱정이 없습니다. 새 제품 3개 세트입니다.",
         stats: { likes: 5, views: 89, chats: 1 }
     },
@@ -127,6 +139,8 @@ const products = [
         id: 2,
         title: "리유저블 컵",
         price: "1200",
+        isUserOwned: true,
+        recipientName: "박준혁",
         description: "카페에서 받은 튼튼한 리유저블 컵입니다. 깨끗하게 세척 완료했으며, 뜨거운 음료도 가능합니다. 다회용 컵 사용으로 지구를 지켜요!",
         stats: { likes: 8, views: 156, chats: 2 }
     },
@@ -189,7 +203,9 @@ function renderProductGrid(items, gridId = 'item-grid') {
         itemCard.innerHTML = `
             <div class="item-image placeholder"></div>
             <h4 class="item-title">${product.title}</h4>
-            <p class="item-price">${product.price} 크레딧</p>
+            ${gridId === 'shared-item-grid' && product.recipientName 
+                ? `<p class="item-recipient" style="font-size: 11px; color: var(--primary-green); margin-top: 4px;">나눔 완료: ${product.recipientName}님</p>`
+                : `<p class="item-price">${product.price} 크레딧</p>`}
         `;
         grid.appendChild(itemCard);
     });
@@ -243,6 +259,132 @@ function showLikedItems() {
     const likedItems = products.filter(p => likedItemIds.includes(p.id));
     toggleView('liked-items-view');
     renderProductGrid(likedItems, 'liked-item-grid');
+}
+
+function showSharedItems() {
+    const sharedItems = products.filter(p => p.isUserOwned);
+    toggleView('shared-items-view');
+    renderProductGrid(sharedItems, 'shared-item-grid');
+}
+
+function showCreditHistory() {
+    toggleView('credit-history-view');
+    renderCreditCalendar();
+    const container = document.getElementById('credit-history-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    creditHistory.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        
+        const sign = item.amount > 0 ? '+' : '';
+        const amountDisplay = `${sign}${item.amount.toLocaleString()}`;
+        
+        historyItem.innerHTML = `
+            <div class="history-info-box">
+                <span class="history-date">${item.date}</span>
+                <span class="history-title">${item.title}</span>
+            </div>
+            <div class="history-amount ${item.type}">${amountDisplay}</div>
+        `;
+        container.appendChild(historyItem);
+    });
+}
+
+function checkAttendance() {
+    const today = new Date().toISOString().split('T')[0].replace(/-/g, '.');
+    if (attendanceDates.includes(today)) {
+        alert('오늘은 이미 출석 도장을 찍으셨습니다! 내일 또 오세요.');
+        return;
+    }
+
+    const reward = Math.floor(Math.random() * 3) + 1;
+    attendanceDates.push(today);
+    localStorage.setItem('attendanceDates', JSON.stringify(attendanceDates));
+
+    creditHistory.push({
+        id: Date.now(),
+        date: today,
+        title: "일일 출석 보상",
+        amount: reward,
+        type: "earn"
+    });
+    
+    // Update UI
+    const stampBtn = document.getElementById('stamp-btn');
+    if (stampBtn) {
+        stampBtn.classList.add('checked');
+        stampBtn.textContent = '완료';
+    }
+    
+    alert(`출석 완료! ${reward} 크레딧이 적립되었습니다.`);
+    renderHomeMissions(); // Refresh anything if needed
+}
+
+function renderCreditCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    if (!calendarGrid) return;
+    
+    calendarGrid.innerHTML = '';
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    // Day labels
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    days.forEach(day => {
+        const span = document.createElement('div');
+        span.className = 'calendar-day-label';
+        span.textContent = day;
+        calendarGrid.appendChild(span);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    
+    const todayStr = now.toISOString().split('T')[0].replace(/-/g, '.');
+
+    // Padding for first day
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'calendar-day inactive';
+        calendarGrid.appendChild(empty);
+    }
+
+    for (let date = 1; date <= lastDate; date++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+        const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(date).padStart(2, '0')}`;
+        
+        if (dateStr === todayStr) dayDiv.classList.add('today');
+        
+        dayDiv.textContent = date;
+        
+        // Find +/- for this day
+        const dayActions = creditHistory.filter(h => h.date === dateStr);
+        if (dayActions.length > 0) {
+            const dots = document.createElement('div');
+            dots.className = 'dot-indicators';
+            const hasEarn = dayActions.some(a => a.amount > 0);
+            const hasSpend = dayActions.some(a => a.amount < 0);
+            
+            if (hasEarn) {
+                const dot = document.createElement('span');
+                dot.className = 'dot earn';
+                dots.appendChild(dot);
+            }
+            if (hasSpend) {
+                const dot = document.createElement('span');
+                dot.className = 'dot spend';
+                dots.appendChild(dot);
+            }
+            dayDiv.appendChild(dots);
+        }
+        
+        calendarGrid.appendChild(dayDiv);
+    }
 }
 
 function updateMyPageStats() {
