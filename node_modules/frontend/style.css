@@ -1851,7 +1851,18 @@ section {
     font-weight: 500;
     border-radius: 8px;
     position: relative;
-    cursor: default;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover:not(.inactive) {
+    background-color: var(--primary-green-light);
+}
+
+.calendar-day.selected {
+    background-color: var(--primary-green) !important;
+    color: var(--white) !important;
+    font-weight: 700;
 }
 
 .calendar-day.today {

@@ -9,6 +9,7 @@ let likedItemIds = JSON.parse(localStorage.getItem('likedItemIds')) || [];
 let currentProductId = null;
 let completedMissionIds = JSON.parse(localStorage.getItem('completedMissionIds')) || [];
 let attendanceDates = JSON.parse(localStorage.getItem('attendanceDates')) || [];
+let selectedCreditDate = null;
 
 const deptGrowthData = {
     labels: ["12월", "1월", "2월", "3월", "4월"],
@@ -276,7 +277,13 @@ function showSharedItems() {
     renderProductGrid(sharedItems, 'shared-item-grid');
 }
 
-function showCreditHistory() {
+function showCreditHistory(filterDate = null) {
+    if (filterDate === selectedCreditDate) {
+        selectedCreditDate = null; // Toggle off if clicking the same date
+    } else if (filterDate !== null) {
+        selectedCreditDate = filterDate;
+    }
+
     toggleView('credit-history-view');
     renderCreditCalendar();
     const container = document.getElementById('credit-history-list');
@@ -284,7 +291,27 @@ function showCreditHistory() {
     
     container.innerHTML = '';
     
-    creditHistory.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+    // Calculate date range: Last 14 days including today
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+    const twoWeeksAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+    const filteredHistory = creditHistory.filter(item => {
+        const itemDate = new Date(item.date.replace(/\./g, '-'));
+        const within14Days = itemDate >= twoWeeksAgo && itemDate <= today;
+        
+        if (selectedCreditDate) {
+            return item.date === selectedCreditDate && within14Days;
+        }
+        return within14Days;
+    });
+    
+    if (filteredHistory.length === 0) {
+        container.innerHTML = `<p style="padding: 40px; color: var(--text-muted); text-align: center;">${selectedCreditDate ? "해당 날짜의 내역이 없습니다." : "최근 2주간 내역이 없습니다."}</p>`;
+    }
+
+    filteredHistory.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
         const historyItem = document.createElement('div');
         historyItem.className = 'history-item';
         
@@ -428,11 +455,23 @@ function renderCreditCalendar() {
         const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(date).padStart(2, '0')}`;
         
         if (dateStr === todayStr) dayDiv.classList.add('today');
+        if (dateStr === selectedCreditDate) dayDiv.classList.add('selected');
         
         dayDiv.textContent = date;
+        dayDiv.onclick = () => showCreditHistory(dateStr);
         
-        // Find +/- for this day
-        const dayActions = creditHistory.filter(h => h.date === dateStr);
+        // Find +/- for this day, respect 14-day filter
+        const dayDate = new Date(dateStr.replace(/\./g, '-'));
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+        const twoWeeksAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+        const dayActions = creditHistory.filter(h => {
+            const hDate = new Date(h.date.replace(/\./g, '-'));
+            return h.date === dateStr && hDate >= twoWeeksAgo && hDate <= today;
+        });
+        
         if (dayActions.length > 0) {
             const dots = document.createElement('div');
             dots.className = 'dot-indicators';
