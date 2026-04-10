@@ -120,7 +120,7 @@
                                     <span class="unit">크레딧</span>
                                 </div>
                                 <div class="credit-action">
-                                    <button class="wire-btn small-btn outline-green">크레딧 모으러 가기</button>
+                                    <button class="wire-btn small-btn outline-green" onclick="toggleView('mission-view')">크레딧 모으러 가기</button>
                                 </div>
                             </div>
                             <div class="credit-card side-credit">
@@ -148,23 +148,8 @@
                     
                     <section class="mission-section">
                         <h3 class="section-title">추천 미션</h3>
-                        <div class="horiz-scroll no-scrollbar">
-                            <div class="mission-card">
-                                <h4>텀블러 인증</h4>
-                                <p>텀블러 사용 사진을 인증하고 크레딧을 받으세요.</p>
-                                <div class="mission-action">
-                                    <span class="reward">+500 크레딧</span>
-                                    <button class="wire-btn mini-btn" onclick="jumpToMission(0)">인증하러 가기</button>
-                                </div>
-                            </div>
-                            <div class="mission-card">
-                                <h4>대중교통 인증</h4>
-                                <p>대중교통 사진을 인증하고 크레딧을 받으세요.</p>
-                                <div class="mission-action">
-                                    <span class="reward">+500 크레딧</span>
-                                    <button class="wire-btn mini-btn" onclick="jumpToMission(1)">인증하러 가기</button>
-                                </div>
-                            </div>
+                        <div id="home-mission-list" class="horiz-scroll no-scrollbar">
+                            <!-- Home missions will be dynamically loaded here -->
                         </div>
                     </section>
 
@@ -208,81 +193,11 @@
                         </div>
                     </section>
 
-                    <section class="mission-list">
-                        <!-- Hidden global file input -->
+                    <section class="mission-list" id="mission-list-container">
+                        <!-- Hidden global file input (keep this) -->
                         <input type="file" id="mission-file-input" style="display: none;" onchange="handleFileSelected(event)">
                         
-                        <div class="mission-list-item" id="mission-item-0">
-                            <div class="completion-overlay">
-                                <div class="check-icon">✅</div>
-                                <span>Mission Clear</span>
-                            </div>
-                            <div class="mission-list-top">
-                                <div class="mission-img-placeholder"></div>
-                                <div class="mission-info">
-                                    <h4>텀블러 인증 사진</h4>
-                                    <p>500 크레딧</p>
-                                </div>
-                            </div>
-                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(0)">사진 업로드</button>
-                            <div class="mission-status-container" id="status-container-0">
-                                <div class="mission-progress-track">
-                                    <div class="mission-progress-fill" id="progress-fill-0"></div>
-                                </div>
-                                <div class="mission-status-text" id="status-text-0">업로드 대기 중</div>
-                            </div>
-                        </div>
-                        <div class="mission-list-item" id="mission-item-1">
-                            <div class="completion-overlay">
-                                <div class="check-icon">✅</div>
-                                <span>Mission Clear</span>
-                            </div>
-                            <div class="mission-list-top">
-                                <div class="mission-img-placeholder"></div>
-                                <div class="mission-info">
-                                    <h4>대중교통 인증 사진</h4>
-                                    <p>500 크레딧</p>
-                                </div>
-                            </div>
-                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(1)">사진 업로드</button>
-                            <div class="mission-status-container" id="status-container-1">
-                                <div class="mission-progress-track">
-                                    <div class="mission-progress-fill" id="progress-fill-1"></div>
-                                </div>
-                                <div class="mission-status-text" id="status-text-1">업로드 대기 중</div>
-                            </div>
-                        </div>
-                        <div class="mission-list-item" id="mission-item-2">
-                            <div class="completion-overlay">
-                                <div class="check-icon">✅</div>
-                                <span>Mission Clear</span>
-                            </div>
-                            <div class="mission-list-top">
-                                <div class="mission-img-placeholder"></div>
-                                <div class="mission-info">
-                                    <h4>음식 남기지 않기 인증 사진</h4>
-                                    <p>500 크레딧</p>
-                                </div>
-                            </div>
-                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(2)">사진 업로드</button>
-                            <div class="mission-status-container" id="status-container-2">
-                                <div class="mission-progress-track">
-                                    <div class="mission-progress-fill" id="progress-fill-2"></div>
-                                </div>
-                                <div class="mission-status-text" id="status-text-2">업로드 대기 중</div>
-                            </div>
-                        </div>
-                        <div class="mission-list-item" id="mission-item-3">
-                            <div class="completion-overlay">내일 다시 만나요!</div>
-                            <div class="mission-list-top">
-                                <div class="mission-img-placeholder"></div>
-                                <div class="mission-info">
-                                    <h4>물품 나눔하기</h4>
-                                    <p>500 크레딧</p>
-                                </div>
-                            </div>
-                            <button class="wire-btn list-upload-btn" onclick="toggleView('home-view')">물품 올리기</button>
-                        </div>
+                        <!-- Mission items will be dynamically loaded here -->
                     </section>
                 </div>
 

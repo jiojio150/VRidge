@@ -1,6 +1,13 @@
-// Check if logged in on page load
+const missions = [
+    { id: 0, title: "텀블러 인증 사진", reward: 500, description: "텀블러 사용 사진을 인증하고 크레딧을 받으세요." },
+    { id: 1, title: "대중교통 인증 사진", reward: 500, description: "대중교통 사진을 인증하고 크레딧을 받으세요." },
+    { id: 2, title: "음식 남기지 않기 인증 사진", reward: 500, description: "음식 남기지 않은 사진을 인증하고 크레딧을 받으세요." },
+    { id: 3, title: "물품 나눔하기", reward: 500, description: "사용하지 않는 물품을 나눔하고 크레딧을 받으세요.", isSpecial: true }
+];
+
 let likedItemIds = JSON.parse(localStorage.getItem('likedItemIds')) || [];
 let currentProductId = null;
+let completedMissionIds = JSON.parse(localStorage.getItem('completedMissionIds')) || [];
 
 window.onload = function() {
     const user = localStorage.getItem('user');
@@ -8,6 +15,8 @@ window.onload = function() {
         toggleView('home-view');
     }
     renderProductGrid(products);
+    renderHomeMissions();
+    renderMissionList();
     updateMyPageStats();
 };
 
@@ -23,23 +32,21 @@ function handleLogin() {
         return;
     }
 
-    // Mock Login - Always succeed for wireframes
     alert('로그인에 성공했습니다!');
     
-    // Save a mock user session
     localStorage.setItem('user', JSON.stringify({
         id: 1,
         name: '김나현',
         email: email
     }));
     
-    // Clear inputs
     emailInput.value = '';
     passwordInput.value = '';
     
-    // Go to home view
     toggleView('home-view');
     renderProductGrid(products);
+    renderHomeMissions();
+    renderMissionList();
 }
 
 function handleSignup() {
@@ -63,42 +70,39 @@ function handleSignup() {
         return;
     }
 
-    // Mock Signup - Always succeed
     alert('회원가입이 완료되었습니다. 이제 로그인해주세요.');
     
-    // Clear inputs
     nameInput.value = '';
     emailInput.value = '';
     passwordInput.value = '';
     confirmInput.value = '';
     
-    // Go to login view
     toggleView('login-view');
 }
 
-// 로그아웃 (선택 기능)
 function logout() {
     localStorage.removeItem('user');
     toggleView('login-view');
 }
 
 function toggleView(viewId) {
-    // Hide all views
     document.querySelectorAll('.view').forEach(view => {
         view.classList.remove('active');
     });
     
-    // Show the targeted view
     document.getElementById(viewId).classList.add('active');
 
-    // If switching to home-view, reset filter to show all
     if (viewId === 'home-view') {
         const title = document.querySelector('#home-view .section-title');
         if (title) title.textContent = "나눔 물품 리스트";
         renderProductGrid(products);
+        renderHomeMissions();
     }
 
-    // Update stats if going to My Page
+    if (viewId === 'mission-view') {
+        renderMissionList();
+    }
+
     if (viewId === 'mypage-view') {
         updateMyPageStats();
     }
@@ -173,25 +177,20 @@ const products = [
 function renderProductGrid(items, gridId = 'item-grid') {
     const grid = document.getElementById(gridId);
     if (!grid) return;
-    
     grid.innerHTML = '';
-    
     if (items.length === 0) {
         grid.innerHTML = '<p style="grid-column: span 3; padding: 40px 0; color: var(--text-muted); text-align: center;">아이템이 없습니다.</p>';
         return;
     }
-
     items.forEach(product => {
         const itemCard = document.createElement('div');
         itemCard.className = 'item-card';
         itemCard.onclick = () => openDetail(product.id);
-        
         itemCard.innerHTML = `
             <div class="item-image placeholder"></div>
             <h4 class="item-title">${product.title}</h4>
             <p class="item-price">${product.price} 크레딧</p>
         `;
-        
         grid.appendChild(itemCard);
     });
 }
@@ -199,15 +198,10 @@ function renderProductGrid(items, gridId = 'item-grid') {
 function openDetail(id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
-    
     currentProductId = id;
-
-    // Update DOM elements in product-detail-view
     document.getElementById('detail-title').textContent = product.title;
     document.getElementById('detail-price').innerHTML = `${product.price} <span class="unit">크레딧</span>`;
     document.getElementById('detail-description-text').innerHTML = product.description.replace(/\n/g, '<br>');
-    
-    // Update stats
     const statsContainer = document.querySelector('.product-stats');
     if (statsContainer) {
         const extraLike = likedItemIds.includes(id) ? 1 : 0;
@@ -217,8 +211,6 @@ function openDetail(id) {
             <span class="stat">채팅 ${product.stats.chats}</span>
         `;
     }
-
-    // Update heart button status
     const heartBtn = document.getElementById('heart-btn');
     if (heartBtn) {
         if (likedItemIds.includes(id)) {
@@ -229,39 +221,27 @@ function openDetail(id) {
             heartBtn.classList.remove('liked');
         }
     }
-
-    // Header updates
     const appHeaderH2 = document.querySelector('#product-detail-view .app-header h2');
     if (appHeaderH2) appHeaderH2.textContent = product.title;
-
-    // Show view
     toggleView('product-detail-view');
 }
 
 function toggleLike() {
     if (currentProductId === null) return;
-    
     const index = likedItemIds.indexOf(currentProductId);
     if (index > -1) {
         likedItemIds.splice(index, 1);
     } else {
         likedItemIds.push(currentProductId);
     }
-    
     localStorage.setItem('likedItemIds', JSON.stringify(likedItemIds));
-    
-    // Refresh detail view
     openDetail(currentProductId);
     updateMyPageStats();
 }
 
 function showLikedItems() {
     const likedItems = products.filter(p => likedItemIds.includes(p.id));
-    
-    // Navigate to dedicated Liked Items view
     toggleView('liked-items-view');
-    
-    // Render into the dedicated grid
     renderProductGrid(likedItems, 'liked-item-grid');
 }
 
@@ -272,19 +252,73 @@ function updateMyPageStats() {
     }
 }
 
-// --- Mission Upload Simulation ---
-let selectedMissionId = null;
+function renderHomeMissions() {
+    const container = document.getElementById('home-mission-list');
+    if (!container) return;
+    container.innerHTML = '';
+    missions.forEach(mission => {
+        const isCompleted = completedMissionIds.includes(mission.id);
+        const card = document.createElement('div');
+        card.className = `mission-card ${isCompleted ? 'completed' : ''}`;
+        card.innerHTML = `
+            ${isCompleted ? '<div class="completion-overlay"><div class="check-icon">✅</div><span>Clear</span></div>' : ''}
+            <h4>${mission.title}</h4>
+            <p>${mission.description}</p>
+            <div class="mission-action">
+                <span class="reward">+${mission.reward} 크레딧</span>
+                <button class="wire-btn mini-btn" onclick="jumpToMission(${mission.id})">인증하러 가기</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
 
+function renderMissionList() {
+    const container = document.getElementById('mission-list-container');
+    if (!container) return;
+    const fileInput = document.getElementById('mission-file-input');
+    container.innerHTML = '';
+    if (fileInput) container.appendChild(fileInput);
+    missions.forEach(mission => {
+        const isCompleted = completedMissionIds.includes(mission.id);
+        const item = document.createElement('div');
+        item.className = `mission-list-item ${isCompleted ? 'completed' : ''}`;
+        item.id = `mission-item-${mission.id}`;
+        const btnIdAttr = mission.isSpecial ? `onclick="toggleView('home-view')"` : `onclick="triggerMissionUpload(${mission.id})"`;
+        const btnText = mission.isSpecial ? '물품 올리기' : '사진 업로드';
+        item.innerHTML = `
+            <div class="completion-overlay">
+                <div class="check-icon">✅</div>
+                <span>Mission Clear</span>
+            </div>
+            <div class="mission-list-top">
+                <div class="mission-img-placeholder"></div>
+                <div class="mission-info">
+                    <h4>${mission.title}</h4>
+                    <p>${mission.reward} 크레딧</p>
+                </div>
+            </div>
+            <button class="wire-btn list-upload-btn" ${isCompleted ? 'disabled' : ''} ${btnIdAttr}>${isCompleted ? '완료됨' : btnText}</button>
+            <div class="mission-status-container" id="status-container-${mission.id}">
+                <div class="mission-progress-track">
+                    <div class="mission-progress-fill" id="progress-fill-${mission.id}"></div>
+                </div>
+                <div class="mission-status-text" id="status-text-${mission.id}">업로드 대기 중</div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+let selectedMissionId = null;
 function triggerMissionUpload(id) {
     selectedMissionId = id;
     document.getElementById('mission-file-input').click();
 }
 
 function handleFileSelected(event) {
-    if (event.target.files.length > 0) {
-        if (selectedMissionId !== null) {
-            simulateMissionUpload(selectedMissionId);
-        }
+    if (event.target.files.length > 0 && selectedMissionId !== null) {
+        simulateMissionUpload(selectedMissionId);
     }
 }
 
@@ -293,10 +327,7 @@ function simulateMissionUpload(id) {
     const fill = document.getElementById(`progress-fill-${id}`);
     const text = document.getElementById(`status-text-${id}`);
     const btn = document.querySelector(`#mission-item-${id} .list-upload-btn`);
-    
     if (!container || !fill || !text) return;
-    
-    // Reset and show
     container.style.display = 'block';
     fill.style.width = '0%';
     fill.classList.remove('waiting', 'approved');
@@ -304,42 +335,28 @@ function simulateMissionUpload(id) {
     text.className = 'mission-status-text';
     btn.disabled = true;
     btn.style.opacity = '0.5';
-
     let progress = 0;
     const interval = setInterval(() => {
         progress += Math.floor(Math.random() * 10) + 5;
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
-            
-            // Step 1: Upload Complete
             fill.style.width = '100%';
             text.textContent = '업로드 완료!';
             text.classList.add('upload-complete');
-            
             setTimeout(() => {
-                // Step 2: Waiting for approval (Turn bar ORANGE)
                 fill.classList.add('waiting');
                 text.textContent = '업로드 완료! 관리자의 승인을 기다리는 중...';
                 text.classList.add('waiting');
-                
                 setTimeout(() => {
-                    // Step 3: Approved (Reduced opacity and overlay)
-                    const item = document.getElementById(`mission-item-${id}`);
-                    if (item) item.classList.add('completed');
-                    
-                    // Turn bar to low-opacity green
-                    fill.classList.remove('waiting');
-                    fill.classList.add('approved');
-                    
-                    text.textContent = '승인 완료! +500 크레딧';
-                    text.className = 'mission-status-text approved';
-                    
-                    btn.textContent = '완료됨';
-                    btn.disabled = true;
-                }, 3000); // 3 seconds for approval simulation
-                
-            }, 1000); // 1 second after upload complete
+                    if (!completedMissionIds.includes(id)) {
+                        completedMissionIds.push(id);
+                        localStorage.setItem('completedMissionIds', JSON.stringify(completedMissionIds));
+                    }
+                    renderHomeMissions();
+                    renderMissionList();
+                }, 3000);
+            }, 1000);
         } else {
             fill.style.width = `${progress}%`;
             text.textContent = `업로드 중... ${progress}%`;
@@ -347,25 +364,16 @@ function simulateMissionUpload(id) {
     }, 150);
 }
 
-// --- Navigation Enhancement ---
 function jumpToMission(id) {
-    // 1. Switch View
     toggleView('mission-view');
-    
-    // 2. Wait for DOM/Transition
     setTimeout(() => {
         const target = document.getElementById(`mission-item-${id}`);
-        if (!target) return;
-        
-        // 3. Smooth Scroll to Target
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
 }
 
 function handleChatKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
+    if (event.key === 'Enter') sendMessage();
 }
 
 function sendMessage() {
@@ -373,17 +381,13 @@ function sendMessage() {
     const message = input.value.trim();
     if (message) {
         const container = document.getElementById('chat-messages-container');
-        
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message sent';
-        
         const bubbleDiv = document.createElement('div');
         bubbleDiv.className = 'message-bubble';
         bubbleDiv.textContent = message;
-        
         messageDiv.appendChild(bubbleDiv);
         container.appendChild(messageDiv);
-        
         input.value = '';
         container.scrollTop = container.scrollHeight;
     }
