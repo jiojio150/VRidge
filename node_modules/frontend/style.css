@@ -957,23 +957,26 @@ section {
 
 .profile-stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
     padding: 0 20px 24px;
 }
 
 .stat-card {
     background-color: var(--white);
-    padding: 20px;
+    padding: 16px 10px;
     border-radius: 16px;
-    text-align: left;
+    text-align: center;
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
+    border-color: var(--primary-green);
+    background-color: var(--primary-green-light);
 }
 
 .stat-icon {
@@ -981,7 +984,7 @@ section {
     height: 32px;
     background-color: var(--primary-green-light);
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -990,16 +993,19 @@ section {
 }
 
 .stat-card h3 {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 2px;
     color: var(--text-main);
 }
 
 .stat-card p {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    font-weight: 500;
+}
+
+.heart-action-btn.liked {
+    color: #EF4444; /* Red color for liked status */
 }
 
 .badges-section {

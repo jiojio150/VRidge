@@ -170,52 +170,8 @@
 
                     <section class="item-section">
                         <h3 class="section-title">나눔 물품 리스트</h3>
-                        <div class="item-grid-3x3">
-                            <div class="item-card" onclick="openDetail(0)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">빈티지 조명</h4>
-                                <p class="item-price">2500 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(1)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">친환경 수세미</h4>
-                                <p class="item-price">500 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(2)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">리유저블 컵</h4>
-                                <p class="item-price">1200 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(3)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">에코백</h4>
-                                <p class="item-price">800 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(4)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">유리 반찬통</h4>
-                                <p class="item-price">1500 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(5)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">스텐 빨대</h4>
-                                <p class="item-price">300 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(6)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">대나무 칫솔</h4>
-                                <p class="item-price">400 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(7)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">고체 샴푸바</h4>
-                                <p class="item-price">1000 크레딧</p>
-                            </div>
-                            <div class="item-card" onclick="openDetail(8)">
-                                <div class="item-image placeholder"></div>
-                                <h4 class="item-title">천연 비누</h4>
-                                <p class="item-price">600 크레딧</p>
-                            </div>
+                        <div id="item-grid" class="item-grid-3x3">
+                            <!-- Items will be dynamically loaded here by script.js -->
                         </div>
                     </section>
                 </div>
@@ -420,15 +376,20 @@
                 </section>
 
                 <section class="profile-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">📦</div>
-                        <h3>18</h3>
-                        <p>나눔한 물품</p>
+                    <div class="stat-card" onclick="showLikedItems()">
+                        <div class="stat-icon">❤️</div>
+                        <h3 id="mypage-likes-count">0</h3>
+                        <p>마음에 들어요</p>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">💰</div>
                         <h3>1,250</h3>
                         <p>크레딧</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <h3>18</h3>
+                        <p>나눔한 물품</p>
                     </div>
                 </section>
 
@@ -487,6 +448,36 @@
             </nav>
         </div> <!-- app-layout end -->
     </div> <!-- mypage-view end -->
+    
+    <!-- Liked Items View -->
+    <div id="liked-items-view" class="view">
+        <div class="app-layout">
+            <header class="app-header">
+                <button class="back-btn" onclick="toggleView('mypage-view')" style="border:none;background:none;font-size:18px;font-weight:bold;cursor:pointer;color:var(--text-main);">&lt;</button>
+                <h2 style="margin-left: 10px;">마음에 들어요</h2>
+            </header>
+            
+            <div class="app-content">
+                <div class="page-header">
+                    <h1 class="bg-title">관심 목록</h1>
+                    <p class="bg-subtitle">내가 찜한 물품들을 확인해보세요.</p>
+                </div>
+
+                <section class="item-section">
+                    <div id="liked-item-grid" class="item-grid-3x3">
+                        <!-- Liked items will be dynamically loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon">🏠</span>홈</button>
+                <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon">🎯</span>미션</button>
+                <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
+                <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
+            </nav>
+        </div>
+    </div>
 
     <!-- Product Detail View -->
     <div id="product-detail-view" class="view">
@@ -545,7 +536,7 @@
             </div>
 
             <div class="fixed-bottom-action">
-                <button class="heart-action-btn">♡</button>
+                <button id="heart-btn" class="heart-action-btn" onclick="toggleLike()">♡</button>
                 <div class="vertical-divider"></div>
                 <button class="chat-action-btn primary" onclick="toggleView('chat-detail-view')">채팅하기</button>
             </div>

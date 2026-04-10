@@ -1,10 +1,14 @@
 // Check if logged in on page load
+let likedItemIds = JSON.parse(localStorage.getItem('likedItemIds')) || [];
+let currentProductId = null;
+
 window.onload = function() {
     const user = localStorage.getItem('user');
     if (user) {
         toggleView('home-view');
-        // Wait, maybe we should update the UI with their name later
     }
+    renderProductGrid(products);
+    updateMyPageStats();
 };
 
 function handleLogin() {
@@ -35,6 +39,7 @@ function handleLogin() {
     
     // Go to home view
     toggleView('home-view');
+    renderProductGrid(products);
 }
 
 function handleSignup() {
@@ -85,6 +90,18 @@ function toggleView(viewId) {
     
     // Show the targeted view
     document.getElementById(viewId).classList.add('active');
+
+    // If switching to home-view, reset filter to show all
+    if (viewId === 'home-view') {
+        const title = document.querySelector('#home-view .section-title');
+        if (title) title.textContent = "나눔 물품 리스트";
+        renderProductGrid(products);
+    }
+
+    // Update stats if going to My Page
+    if (viewId === 'mypage-view') {
+        updateMyPageStats();
+    }
 }
 
 const products = [
@@ -153,23 +170,64 @@ const products = [
     }
 ];
 
-function openDetail(index) {
-    const product = products[index];
+function renderProductGrid(items, gridId = 'item-grid') {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    if (items.length === 0) {
+        grid.innerHTML = '<p style="grid-column: span 3; padding: 40px 0; color: var(--text-muted); text-align: center;">아이템이 없습니다.</p>';
+        return;
+    }
+
+    items.forEach(product => {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.onclick = () => openDetail(product.id);
+        
+        itemCard.innerHTML = `
+            <div class="item-image placeholder"></div>
+            <h4 class="item-title">${product.title}</h4>
+            <p class="item-price">${product.price} 크레딧</p>
+        `;
+        
+        grid.appendChild(itemCard);
+    });
+}
+
+function openDetail(id) {
+    const product = products.find(p => p.id === id);
     if (!product) return;
+    
+    currentProductId = id;
 
     // Update DOM elements in product-detail-view
     document.getElementById('detail-title').textContent = product.title;
     document.getElementById('detail-price').innerHTML = `${product.price} <span class="unit">크레딧</span>`;
     document.getElementById('detail-description-text').innerHTML = product.description.replace(/\n/g, '<br>');
     
-    // Update stats if elements exist
+    // Update stats
     const statsContainer = document.querySelector('.product-stats');
     if (statsContainer) {
+        const extraLike = likedItemIds.includes(id) ? 1 : 0;
         statsContainer.innerHTML = `
-            <span class="stat">관심 ${product.stats.likes}</span>
+            <span class="stat">관심 ${product.stats.likes + extraLike}</span>
             <span class="stat">조회 ${product.stats.views}</span>
             <span class="stat">채팅 ${product.stats.chats}</span>
         `;
+    }
+
+    // Update heart button status
+    const heartBtn = document.getElementById('heart-btn');
+    if (heartBtn) {
+        if (likedItemIds.includes(id)) {
+            heartBtn.textContent = '❤️';
+            heartBtn.classList.add('liked');
+        } else {
+            heartBtn.textContent = '♡';
+            heartBtn.classList.remove('liked');
+        }
     }
 
     // Header updates
@@ -178,6 +236,40 @@ function openDetail(index) {
 
     // Show view
     toggleView('product-detail-view');
+}
+
+function toggleLike() {
+    if (currentProductId === null) return;
+    
+    const index = likedItemIds.indexOf(currentProductId);
+    if (index > -1) {
+        likedItemIds.splice(index, 1);
+    } else {
+        likedItemIds.push(currentProductId);
+    }
+    
+    localStorage.setItem('likedItemIds', JSON.stringify(likedItemIds));
+    
+    // Refresh detail view
+    openDetail(currentProductId);
+    updateMyPageStats();
+}
+
+function showLikedItems() {
+    const likedItems = products.filter(p => likedItemIds.includes(p.id));
+    
+    // Navigate to dedicated Liked Items view
+    toggleView('liked-items-view');
+    
+    // Render into the dedicated grid
+    renderProductGrid(likedItems, 'liked-item-grid');
+}
+
+function updateMyPageStats() {
+    const countEl = document.getElementById('mypage-likes-count');
+    if (countEl) {
+        countEl.textContent = likedItemIds.length;
+    }
 }
 
 function handleChatKeyPress(event) {
