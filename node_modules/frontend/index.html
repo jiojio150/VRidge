@@ -171,47 +171,47 @@
                     <section class="item-section">
                         <h3 class="section-title">나눔 물품 리스트</h3>
                         <div class="item-grid-3x3">
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(0)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">빈티지 조명</h4>
                                 <p class="item-price">2500 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(1)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">친환경 수세미</h4>
                                 <p class="item-price">500 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(2)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">리유저블 컵</h4>
                                 <p class="item-price">1200 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(3)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">에코백</h4>
                                 <p class="item-price">800 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(4)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">유리 반찬통</h4>
                                 <p class="item-price">1500 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(5)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">스텐 빨대</h4>
                                 <p class="item-price">300 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(6)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">대나무 칫솔</h4>
                                 <p class="item-price">400 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(7)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">고체 샴푸바</h4>
                                 <p class="item-price">1000 크레딧</p>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" onclick="openDetail(8)">
                                 <div class="item-image placeholder"></div>
                                 <h4 class="item-title">천연 비누</h4>
                                 <p class="item-price">600 크레딧</p>
@@ -485,9 +485,73 @@
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon">💬</span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon">👤</span>내정보</button>
             </nav>
+        </div> <!-- app-layout end -->
+    </div> <!-- mypage-view end -->
+
+    <!-- Product Detail View -->
+    <div id="product-detail-view" class="view">
+        <div class="app-layout detail-layout">
+            <header class="app-header detail-header">
+                <button class="back-btn-circle" onclick="toggleView('home-view')">&lt;</button>
+                <h2>상세 정보</h2>
+                <button class="share-btn">🔗</button>
+            </header>
+
+            <div class="app-content no-bottom-nav">
+                <div class="detail-gallery-container">
+                    <div class="detail-gallery horiz-scroll no-scrollbar">
+                        <div class="gallery-item placeholder">사진 1</div>
+                        <div class="gallery-item placeholder">사진 2</div>
+                        <div class="gallery-item placeholder">사진 3</div>
+                        <div class="gallery-item placeholder">사진 4</div>
+                    </div>
+                    <div class="gallery-indicator">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+
+                <div class="product-info-section">
+                    <div class="info-header">
+                        <h1 id="detail-title" class="detail-title">물품명</h1>
+                        <p id="detail-price" class="detail-price">0 <span class="unit">크레딧</span></p>
+                    </div>
+                    
+                    <div class="seller-profile">
+                        <div class="seller-avatar"></div>
+                        <div class="seller-details">
+                            <p class="seller-name">김나현</p>
+                            <p class="seller-meta">레벨 5 . 인하대 정문 인근</p>
+                        </div>
+                        <div class="seller-rank">
+                            <span class="rank-label">매너 온도</span>
+                            <span class="rank-val">42.5℃</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-description">
+                        <p id="detail-description-text" class="description-text">
+                            물품 상세 설명이 이곳에 표시됩니다.
+                        </p>
+                        <div class="product-stats">
+                            <span class="stat">관심 0</span>
+                            <span class="stat">조회 0</span>
+                            <span class="stat">채팅 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fixed-bottom-action">
+                <button class="heart-action-btn">♡</button>
+                <div class="vertical-divider"></div>
+                <button class="chat-action-btn primary" onclick="toggleView('chat-detail-view')">채팅하기</button>
+            </div>
         </div>
     </div>
-</div>
+</div> <!-- container end -->
     <script src="script.js"></script>
 </body>
 </html>
