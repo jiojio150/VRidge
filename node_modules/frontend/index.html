@@ -209,7 +209,14 @@
                     </section>
 
                     <section class="mission-list">
-                        <div class="mission-list-item">
+                        <!-- Hidden global file input -->
+                        <input type="file" id="mission-file-input" style="display: none;" onchange="handleFileSelected(event)">
+                        
+                        <div class="mission-list-item" id="mission-item-0">
+                            <div class="completion-overlay">
+                                <div class="check-icon">✅</div>
+                                <span>Mission Clear</span>
+                            </div>
                             <div class="mission-list-top">
                                 <div class="mission-img-placeholder"></div>
                                 <div class="mission-info">
@@ -217,9 +224,19 @@
                                     <p>500 크레딧</p>
                                 </div>
                             </div>
-                            <button class="wire-btn list-upload-btn">사진 업로드</button>
+                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(0)">사진 업로드</button>
+                            <div class="mission-status-container" id="status-container-0">
+                                <div class="mission-progress-track">
+                                    <div class="mission-progress-fill" id="progress-fill-0"></div>
+                                </div>
+                                <div class="mission-status-text" id="status-text-0">업로드 대기 중</div>
+                            </div>
                         </div>
-                        <div class="mission-list-item">
+                        <div class="mission-list-item" id="mission-item-1">
+                            <div class="completion-overlay">
+                                <div class="check-icon">✅</div>
+                                <span>Mission Clear</span>
+                            </div>
                             <div class="mission-list-top">
                                 <div class="mission-img-placeholder"></div>
                                 <div class="mission-info">
@@ -227,9 +244,19 @@
                                     <p>500 크레딧</p>
                                 </div>
                             </div>
-                            <button class="wire-btn list-upload-btn">사진 업로드</button>
+                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(1)">사진 업로드</button>
+                            <div class="mission-status-container" id="status-container-1">
+                                <div class="mission-progress-track">
+                                    <div class="mission-progress-fill" id="progress-fill-1"></div>
+                                </div>
+                                <div class="mission-status-text" id="status-text-1">업로드 대기 중</div>
+                            </div>
                         </div>
-                        <div class="mission-list-item">
+                        <div class="mission-list-item" id="mission-item-2">
+                            <div class="completion-overlay">
+                                <div class="check-icon">✅</div>
+                                <span>Mission Clear</span>
+                            </div>
                             <div class="mission-list-top">
                                 <div class="mission-img-placeholder"></div>
                                 <div class="mission-info">
@@ -237,9 +264,16 @@
                                     <p>500 크레딧</p>
                                 </div>
                             </div>
-                            <button class="wire-btn list-upload-btn">사진 업로드</button>
+                            <button class="wire-btn list-upload-btn" onclick="triggerMissionUpload(2)">사진 업로드</button>
+                            <div class="mission-status-container" id="status-container-2">
+                                <div class="mission-progress-track">
+                                    <div class="mission-progress-fill" id="progress-fill-2"></div>
+                                </div>
+                                <div class="mission-status-text" id="status-text-2">업로드 대기 중</div>
+                            </div>
                         </div>
-                        <div class="mission-list-item">
+                        <div class="mission-list-item" id="mission-item-3">
+                            <div class="completion-overlay">내일 다시 만나요!</div>
                             <div class="mission-list-top">
                                 <div class="mission-img-placeholder"></div>
                                 <div class="mission-info">
@@ -247,7 +281,7 @@
                                     <p>500 크레딧</p>
                                 </div>
                             </div>
-                            <button class="wire-btn list-upload-btn">물품 올리기</button>
+                            <button class="wire-btn list-upload-btn" onclick="toggleView('home-view')">물품 올리기</button>
                         </div>
                     </section>
                 </div>

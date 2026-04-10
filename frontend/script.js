@@ -272,6 +272,80 @@ function updateMyPageStats() {
     }
 }
 
+// --- Mission Upload Simulation ---
+let selectedMissionId = null;
+
+function triggerMissionUpload(id) {
+    selectedMissionId = id;
+    document.getElementById('mission-file-input').click();
+}
+
+function handleFileSelected(event) {
+    if (event.target.files.length > 0) {
+        if (selectedMissionId !== null) {
+            simulateMissionUpload(selectedMissionId);
+        }
+    }
+}
+
+function simulateMissionUpload(id) {
+    const container = document.getElementById(`status-container-${id}`);
+    const fill = document.getElementById(`progress-fill-${id}`);
+    const text = document.getElementById(`status-text-${id}`);
+    const btn = document.querySelector(`#mission-item-${id} .list-upload-btn`);
+    
+    if (!container || !fill || !text) return;
+    
+    // Reset and show
+    container.style.display = 'block';
+    fill.style.width = '0%';
+    text.textContent = '업로드 중... 0%';
+    text.className = 'mission-status-text';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 10) + 5;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            
+            // Step 1: Upload Complete
+            fill.style.width = '100%';
+            text.textContent = '업로드 완료!';
+            text.classList.add('upload-complete');
+            
+            setTimeout(() => {
+                // Step 2: Waiting for approval (Turn bar ORANGE)
+                fill.classList.add('waiting');
+                text.textContent = '업로드 완료! 관리자의 승인을 기다리는 중...';
+                text.classList.add('waiting');
+                
+                setTimeout(() => {
+                    // Step 3: Approved (Reduced opacity and overlay)
+                    const item = document.getElementById(`mission-item-${id}`);
+                    if (item) item.classList.add('completed');
+                    
+                    // Turn bar to low-opacity green
+                    fill.classList.remove('waiting');
+                    fill.classList.add('approved');
+                    
+                    text.textContent = '승인 완료! +500 크레딧';
+                    text.className = 'mission-status-text approved';
+                    
+                    btn.textContent = '완료됨';
+                    btn.disabled = true;
+                }, 3000); // 3 seconds for approval simulation
+                
+            }, 1000); // 1 second after upload complete
+        } else {
+            fill.style.width = `${progress}%`;
+            text.textContent = `업로드 중... ${progress}%`;
+        }
+    }, 150);
+}
+
 function handleChatKeyPress(event) {
     if (event.key === 'Enter') {
         sendMessage();
