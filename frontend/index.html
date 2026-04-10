@@ -133,7 +133,7 @@
                                     <button class="wire-btn small-btn outline-green" onclick="toggleView('mission-view')">크레딧 모으러 가기</button>
                                 </div>
                             </div>
-                            <div class="credit-card side-credit">
+                            <div class="credit-card side-credit" onclick="showDeptRanking()">
                                 <h3>크레딧 총액 학과 순위</h3>
                                 <ul class="ranking-list">
                                     <li>
@@ -503,6 +503,53 @@
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
             </nav>
+        </div>
+    </div>
+
+    <!-- Dept Ranking Modal -->
+    <div id="dept-ranking-view" class="view">
+        <div class="modal-overlay" onclick="closeDeptModal()"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>학과별 랭킹 & 추이</h2>
+                <button class="close-modal-btn" onclick="closeDeptModal()">&times;</button>
+            </header>
+            
+            <div class="modal-body">
+                <div class="page-header" style="padding: 20px 24px 0;">
+                    <h1 class="bg-title" style="font-size: 22px;">성장 리포트</h1>
+                    <p class="bg-subtitle">어떤 학과가 가장 열심히 모으고 있을까요?</p>
+                </div>
+
+                <div class="graph-card">
+                    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">월별 크레딧 성장 추이</h3>
+                    <div class="graph-container">
+                        <svg id="dept-graph-svg" viewBox="0 0 300 150" width="100%" height="180"></svg>
+                    </div>
+                </div>
+
+                <div id="dept-legend" class="graph-legend" style="padding: 0 24px 16px; border: none; margin: 0;">
+                    <!-- Legend will be dynamically loaded here -->
+                </div>
+
+                <div class="ranking-detail-list">
+                    <div class="ranking-detail-item">
+                        <span class="rank-num">1</span>
+                        <span class="dept-name">컴퓨터공학과</span>
+                        <span class="dept-score">112,894 <span style="font-size: 10px; font-weight: 400; color: var(--text-muted);">점</span></span>
+                    </div>
+                    <div class="ranking-detail-item">
+                        <span class="rank-num">2</span>
+                        <span class="dept-name">디자인테크놀로지학과</span>
+                        <span class="dept-score">108,420 <span style="font-size: 10px; font-weight: 400; color: var(--text-muted);">점</span></span>
+                    </div>
+                    <div class="ranking-detail-item">
+                        <span class="rank-num">3</span>
+                        <span class="dept-name">경영학과</span>
+                        <span class="dept-score">98,150 <span style="font-size: 10px; font-weight: 400; color: var(--text-muted);">점</span></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

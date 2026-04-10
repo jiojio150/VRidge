@@ -10,6 +10,15 @@ let currentProductId = null;
 let completedMissionIds = JSON.parse(localStorage.getItem('completedMissionIds')) || [];
 let attendanceDates = JSON.parse(localStorage.getItem('attendanceDates')) || [];
 
+const deptGrowthData = {
+    labels: ["12월", "1월", "2월", "3월", "4월"],
+    datasets: [
+        { name: "컴퓨터공학과", points: [80, 85, 95, 105, 112], color: "#10B981" },
+        { name: "디자인테크놀로지학과", points: [60, 70, 75, 90, 108], color: "#3B82F6" },
+        { name: "경영학과", points: [50, 55, 60, 85, 98], color: "#F59E0B" }
+    ]
+};
+
 const creditHistory = [
     { id: 0, date: "2026.04.10", title: "텀블러 인증 미션 완료", amount: 500, type: "earn" },
     { id: 1, date: "2026.04.09", title: "빈티지 조명 나눔 완료", amount: 2500, type: "earn" },
@@ -384,6 +393,88 @@ function renderCreditCalendar() {
         }
         
         calendarGrid.appendChild(dayDiv);
+    }
+}
+
+function showDeptRanking() {
+    openDeptModal();
+}
+
+function openDeptModal() {
+    const modal = document.getElementById('dept-ranking-view');
+    if (modal) {
+        modal.classList.add('active');
+        renderDeptGraph();
+    }
+}
+
+function closeDeptModal() {
+    const modal = document.getElementById('dept-ranking-view');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function renderDeptGraph() {
+    const container = document.getElementById('dept-graph-svg');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    const width = 300;
+    const height = 150;
+    const padding = 30;
+    const chartWidth = width - padding * 2;
+    const chartHeight = height - padding * 2;
+    
+    // Find Max for scaling
+    const allPoints = deptGrowthData.datasets.flatMap(d => d.points);
+    const maxVal = Math.max(...allPoints) * 1.1;
+    
+    // Draw Axis
+    const axis = `
+        <line x1="${padding}" y1="${height-padding}" x2="${width-padding}" y2="${height-padding}" class="chart-axis" />
+        <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height-padding}" class="chart-axis" />
+    `;
+    container.insertAdjacentHTML('beforeend', axis);
+    
+    // Draw Labels
+    deptGrowthData.labels.forEach((label, i) => {
+        const x = padding + (i * (chartWidth / (deptGrowthData.labels.length - 1)));
+        container.insertAdjacentHTML('beforeend', `
+            <text x="${x}" y="${height-padding+15}" class="chart-label" text-anchor="middle">${label}</text>
+        `);
+    });
+
+    // Draw Lines & Points
+    deptGrowthData.datasets.forEach(dept => {
+        let pathData = "";
+        dept.points.forEach((p, i) => {
+            const x = padding + (i * (chartWidth / (dept.points.length - 1)));
+            const y = height - padding - (p / maxVal * chartHeight);
+            
+            if (i === 0) pathData += `M ${x} ${y}`;
+            else pathData += ` L ${x} ${y}`;
+            
+            // Draw circle point
+            container.insertAdjacentHTML('beforeend', `
+                <circle cx="${x}" cy="${y}" r="4" class="chart-point" stroke="${dept.color}" />
+            `);
+        });
+        
+        container.insertAdjacentHTML('afterbegin', `
+            <path d="${pathData}" class="chart-line" stroke="${dept.color}" style="opacity: 0.8;" />
+        `);
+    });
+
+    // Generate Legend
+    const legendContainer = document.getElementById('dept-legend');
+    if (legendContainer) {
+        legendContainer.innerHTML = deptGrowthData.datasets.map(dept => `
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: ${dept.color};"></div>
+                <span>${dept.name}</span>
+            </div>
+        `).join('');
     }
 }
 
