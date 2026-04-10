@@ -111,13 +111,13 @@
                 </header>
                 
                 <div class="app-content">
-                    <section class="attendance-section">
+                    <section class="attendance-section" onclick="showAttendanceDetail()">
                         <div class="attendance-card">
                             <div class="attendance-info">
                                 <h3>오늘의 출석 도장</h3>
                                 <p>매일 출석하고 랜덤 크레딧을 받으세요!</p>
                             </div>
-                            <button id="stamp-btn" class="stamp-btn" onclick="checkAttendance()">도장 꾹!</button>
+                            <button id="stamp-btn" class="stamp-btn" onclick="checkAttendance(); event.stopPropagation();">STAMP</button>
                         </div>
                     </section>
                     
@@ -503,6 +503,32 @@
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
             </nav>
+        </div>
+    </div>
+
+    <!-- Attendance Detail Modal -->
+    <div id="attendance-modal-view" class="view">
+        <div class="modal-overlay" onclick="closeAttendanceModal()"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>나의 출석 현황</h2>
+                <button class="close-modal-btn" onclick="closeAttendanceModal()">&times;</button>
+            </header>
+            
+            <div class="modal-body">
+                <div class="page-header" style="padding: 20px 24px 20px;">
+                    <h1 class="bg-title" style="font-size: 22px;">출석 캘린더</h1>
+                    <p class="bg-subtitle">이번 달 얼마나 꾸준히 참여하셨나요?</p>
+                </div>
+
+                <div id="attendance-grid" class="attendance-grid">
+                    <!-- Calendar will be dynamically loaded here -->
+                </div>
+
+                <div style="padding: 0 24px 24px; color: var(--text-muted); font-size: 13px;">
+                    <p>★ 표시가 있는 날은 출석 도장을 찍은 날입니다.</p>
+                </div>
+            </div>
         </div>
     </div>
 

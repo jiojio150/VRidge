@@ -325,11 +325,71 @@ function checkAttendance() {
     const stampBtn = document.getElementById('stamp-btn');
     if (stampBtn) {
         stampBtn.classList.add('checked');
-        stampBtn.textContent = '완료';
+        stampBtn.classList.add('pop-anim');
+        stampBtn.textContent = 'DONE';
+        setTimeout(() => stampBtn.classList.remove('pop-anim'), 1000);
     }
     
     alert(`출석 완료! ${reward} 크레딧이 적립되었습니다.`);
     renderHomeMissions(); // Refresh anything if needed
+}
+
+function showAttendanceDetail() {
+    const modal = document.getElementById('attendance-modal-view');
+    if (modal) {
+        modal.classList.add('active');
+        renderAttendanceGrid();
+    }
+}
+
+function closeAttendanceModal() {
+    const modal = document.getElementById('attendance-modal-view');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function renderAttendanceGrid() {
+    const grid = document.getElementById('attendance-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    days.forEach(day => {
+        const div = document.createElement('div');
+        div.style.fontSize = '12px';
+        div.style.fontWeight = '700';
+        div.style.color = 'var(--text-muted)';
+        div.style.textAlign = 'center';
+        div.textContent = day;
+        grid.appendChild(div);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    const todayStr = now.toISOString().split('T')[0].replace(/-/g, '.');
+
+    for (let i = 0; i < firstDay; i++) {
+        grid.appendChild(document.createElement('div'));
+    }
+
+    for (let date = 1; date <= lastDate; date++) {
+        const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(date).padStart(2, '0')}`;
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'attendance-day';
+        if (dateStr === todayStr) dayDiv.classList.add('today');
+        
+        if (attendanceDates.includes(dateStr)) {
+            dayDiv.classList.add('stamped');
+        }
+        
+        dayDiv.textContent = date;
+        grid.appendChild(dayDiv);
+    }
 }
 
 function renderCreditCalendar() {
