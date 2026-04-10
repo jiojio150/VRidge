@@ -339,6 +339,10 @@ form {
     background: #E5E7EB; 
     border-radius: 10px;
 }
+.app-content {
+    scroll-behavior: smooth;
+}
+
 
 /* Sections */
 section {

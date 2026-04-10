@@ -299,6 +299,7 @@ function simulateMissionUpload(id) {
     // Reset and show
     container.style.display = 'block';
     fill.style.width = '0%';
+    fill.classList.remove('waiting', 'approved');
     text.textContent = '업로드 중... 0%';
     text.className = 'mission-status-text';
     btn.disabled = true;
@@ -344,6 +345,21 @@ function simulateMissionUpload(id) {
             text.textContent = `업로드 중... ${progress}%`;
         }
     }, 150);
+}
+
+// --- Navigation Enhancement ---
+function jumpToMission(id) {
+    // 1. Switch View
+    toggleView('mission-view');
+    
+    // 2. Wait for DOM/Transition
+    setTimeout(() => {
+        const target = document.getElementById(`mission-item-${id}`);
+        if (!target) return;
+        
+        // 3. Smooth Scroll to Target
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 }
 
 function handleChatKeyPress(event) {
