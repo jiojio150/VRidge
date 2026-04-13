@@ -27,6 +27,13 @@ const creditHistory = [
     { id: 3, date: "2026.04.08", title: "에코백 나눔 완료", amount: 800, type: "earn" }
 ];
 
+const partnerStores = [
+    { id: 101, name: "인하 에코카페", type: "partner", x: 35, y: 45, hasCoupon: true, description: "인하대 정문 유기농 원두 전문점. 개인 텀블러 사용 시 500원 할인!", stats: { views: 842 } },
+    { id: 102, name: "그린샐러드 용현", type: "partner", x: 72, y: 28, hasCoupon: true, description: "용현동 건강한 샐러드 맛집. 다회용기 포장 시 크레딧 쿠폰 사용 가능.", stats: { views: 561 } },
+    { id: 103, name: "지구 보존소 (제로웨이스트)", type: "zero", x: 50, y: 75, hasCoupon: false, description: "생활 전반의 친환경 제품 판매. 리필 스테이션 운영 중.", stats: { views: 1205 } },
+    { id: 104, name: "숲속 비건베이커리", type: "partner", x: 20, y: 80, hasCoupon: true, description: "계란, 우유 없는 건강한 빵집. 에코비드 파트너 상점입니다.", stats: { views: 432 } },
+];
+
 window.onload = function() {
     const user = localStorage.getItem('user');
     if (user) {
@@ -124,6 +131,109 @@ function toggleView(viewId) {
     if (viewId === 'mypage-view') {
         updateMyPageStats();
     }
+
+    if (viewId === 'map-view') {
+        setTimeout(() => renderEcoMap('all'), 50);
+    }
+}
+
+let activeMapFilter = 'all';
+
+function filterMap(category) {
+    activeMapFilter = category;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === (category === 'all' ? '전체' : category === 'item' ? '나눔물품' : category === 'partner' ? '제휴매장' : '제로웨이스트')) {
+            btn.classList.add('active');
+        }
+    });
+    renderEcoMap(category);
+}
+
+function renderEcoMap(category) {
+    const container = document.getElementById('map-container');
+    if (!container) return;
+    
+    // Clear existing pins but keep the grid
+    const pins = container.querySelectorAll('.eco-pin');
+    pins.forEach(p => p.remove());
+
+    const combinedSpots = [];
+
+    // Add Partner Stores
+    if (category === 'all' || category === 'partner' || category === 'zero') {
+        partnerStores.forEach(s => {
+            if (category === 'all' || s.type === category) {
+                combinedSpots.push({ ...s, spotType: 'store' });
+            }
+        });
+    }
+
+    // Add Items as pins (at random but consistent spots for demo)
+    if (category === 'all' || category === 'item') {
+        products.slice(0, 5).forEach((p, index) => {
+            combinedSpots.push({
+                id: p.id,
+                name: p.title,
+                type: 'item',
+                x: 10 + (index * 18),
+                y: 15 + ((index % 3) * 25),
+                spotType: 'item',
+                price: p.price,
+                description: p.description
+            });
+        });
+    }
+
+    combinedSpots.forEach(spot => {
+        const pin = document.createElement('div');
+        pin.className = `eco-pin ${spot.type}-pin`;
+        pin.style.left = `${spot.x}%`;
+        pin.style.top = `${spot.y}%`;
+        
+        const icon = spot.type === 'item' ? '📦' : spot.type === 'partner' ? '🌿' : '♻️';
+        pin.innerHTML = `<span>${icon}</span>`;
+        
+        pin.onclick = (e) => {
+            e.stopPropagation();
+            showSpotDetail(spot);
+            document.querySelectorAll('.eco-pin').forEach(p => p.classList.remove('active'));
+            pin.classList.add('active');
+        };
+        
+        container.appendChild(pin);
+    });
+
+    // Close detail card when clicking elsewhere on map
+    container.onclick = () => {
+        const card = document.getElementById('spot-detail-card');
+        if (card) card.classList.remove('active');
+        document.querySelectorAll('.eco-pin').forEach(p => p.classList.remove('active'));
+    };
+}
+
+function showSpotDetail(spot) {
+    const card = document.getElementById('spot-detail-card');
+    const content = document.getElementById('spot-info-content');
+    if (!card || !content) return;
+
+    let detailHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div>
+                ${spot.hasCoupon ? `<div class="partner-badge">🎟️ 크레딧 쿠폰 사용 가능</div>` : ''}
+                <h3 style="font-size: 18px; font-weight: 700;">${spot.name}</h3>
+                <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">인하대 인근 . 조회 ${spot.stats ? spot.stats.views : '100+'}</p>
+            </div>
+            ${spot.spotType === 'item' ? `<div style="font-weight:700; color:var(--primary-green); font-size:16px;">${spot.price} <span style="font-size:12px; color:var(--text-main);">크레딧</span></div>` : ''}
+        </div>
+        <p style="font-size: 14px; line-height: 1.6; color: #4B5563; margin-bottom: 20px;">${spot.description}</p>
+        <button class="wire-btn primary" onclick="${spot.spotType === 'item' ? `openDetail(${spot.id})` : "alert('매장 상세 정보를 불러오는 중입니다...')"}">
+            ${spot.spotType === 'item' ? '물품 상세보기' : '매장 소식 보기'}
+        </button>
+    `;
+
+    content.innerHTML = detailHTML;
+    card.classList.add('active');
 }
 
 const products = [

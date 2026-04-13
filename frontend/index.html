@@ -173,6 +173,7 @@
 
                 <nav class="bottom-nav">
                     <button class="nav-item active" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                     <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                     <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                     <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -213,6 +214,7 @@
 
                 <nav class="bottom-nav">
                     <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                     <button class="nav-item active" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                     <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                     <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -262,6 +264,7 @@
 
                 <nav class="bottom-nav">
                     <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                     <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                     <button class="nav-item active" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                     <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -308,7 +311,50 @@
             </div>
         </div>
 
-    <!-- My Page View -->
+        <!-- Map View -->
+        <div id="map-view" class="view">
+            <div class="app-layout map-layout">
+                <header class="app-header glass">
+                    <div class="search-container" style="width: 100%; padding: 0 10px;">
+                        <input type="text" placeholder="우리 동네 에코 스팟 검색" class="map-search-input">
+                    </div>
+                </header>
+                
+                <div class="map-main">
+                    <!-- Category Filters -->
+                    <div class="map-filters">
+                        <button class="filter-btn active" onclick="filterMap('all')">전체</button>
+                        <button class="filter-btn" onclick="filterMap('item')">나눔물품</button>
+                        <button class="filter-btn" onclick="filterMap('partner')">제휴매장</button>
+                        <button class="filter-btn" onclick="filterMap('zero')">제로웨이스트</button>
+                    </div>
+
+                    <!-- Map Container (Stylized) -->
+                    <div id="map-container" class="map-container">
+                        <div class="eco-grid"></div>
+                        <!-- Pins will be injected here via script.js -->
+                    </div>
+
+                    <!-- Spot Detail Card (Slide-up) -->
+                    <div id="spot-detail-card" class="spot-detail-card">
+                        <div class="handle"></div>
+                        <div id="spot-info-content">
+                            <!-- Details dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="bottom-nav">
+                    <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                    <button class="nav-item active" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
+                    <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
+                    <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
+                    <button class="nav-item" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- My Page View -->
     <div id="mypage-view" class="view">
         <div class="app-layout">
             <header class="app-header">
@@ -401,6 +447,7 @@
 
             <nav class="bottom-nav">
                 <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                 <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -431,6 +478,7 @@
 
             <nav class="bottom-nav">
                 <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                 <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -461,6 +509,7 @@
 
             <nav class="bottom-nav">
                 <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                 <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
@@ -499,6 +548,7 @@
 
             <nav class="bottom-nav">
                 <button class="nav-item" onclick="toggleView('home-view')"><span class="nav-icon"></span>홈</button>
+                <button class="nav-item" onclick="toggleView('map-view')"><span class="nav-icon"></span>지도</button>
                 <button class="nav-item" onclick="toggleView('mission-view')"><span class="nav-icon"></span>미션</button>
                 <button class="nav-item" onclick="toggleView('chat-list-view')"><span class="nav-icon"></span>채팅</button>
                 <button class="nav-item active" onclick="toggleView('mypage-view')"><span class="nav-icon"></span>내정보</button>
