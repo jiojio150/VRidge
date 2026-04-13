@@ -1906,7 +1906,6 @@ section {
 /* Map View Specific Styles */
 .map-layout {
     background-color: #F8FAFC;
-    height: 100vh;
 }
 
 #map-view.active {
@@ -2034,6 +2033,8 @@ section {
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
     z-index: 30;
+    max-height: 70%;
+    overflow-y: auto;
 }
 
 .spot-detail-card.active {
@@ -2059,4 +2060,77 @@ section {
     align-items: center;
     gap: 4px;
     margin-bottom: 8px;
+}
+
+/* --- Walking Route & Navigation Overlay --- */
+.walking-nav-overlay {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    right: 20px;
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--primary-green);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.walking-nav-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.nav-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-info .nav-icon {
+    font-size: 24px;
+    background-color: var(--primary-green-light);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 2px;
+}
+
+.nav-info p {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.stop-nav-btn {
+    background-color: #EF4444;
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.stop-nav-btn:hover {
+    background-color: #DC2626;
 }

@@ -316,7 +316,7 @@
             <div class="app-layout map-layout">
                 <header class="app-header glass">
                     <div class="search-container" style="width: 100%; padding: 0 10px;">
-                        <input type="text" placeholder="우리 동네 에코 스팟 검색" class="map-search-input">
+                        <input type="text" id="map-search-input" placeholder="우리 동네 에코 스팟 검색" class="map-search-input" onkeyup="if(event.key === 'Enter') handleMapSearch()">
                     </div>
                 </header>
                 
@@ -331,8 +331,24 @@
 
                     <!-- Map Container (Stylized) -->
                     <div id="map-container" class="map-container">
-                        <div class="eco-grid"></div>
+                        <div class="eco-grid" id="eco-grid-bg"></div>
+                        <!-- SVG for walking route -->
+                        <svg id="route-svg" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 5;"></svg>
+                        <!-- My Location Pin -->
+                        <div id="my-location-pin" class="eco-pin my-loc-pin" style="display: none; z-index: 15; border-color: var(--text-main); background-color: var(--text-main);"><span style="color: white; transform: rotate(45deg); font-size: 14px;">나</span></div>
                         <!-- Pins will be injected here via script.js -->
+                    </div>
+
+                    <!-- Walking Nav Overlay -->
+                    <div id="walking-nav-overlay" class="walking-nav-overlay">
+                        <div class="nav-info">
+                            <span class="nav-icon">🚶</span>
+                            <div>
+                                <h4>도보 안내 중</h4>
+                                <p id="nav-dist-text">남은 거리 300m (약 5분)</p>
+                            </div>
+                        </div>
+                        <button class="stop-nav-btn" onclick="stopWalkingRoute()">안내 종료</button>
                     </div>
 
                     <!-- Spot Detail Card (Slide-up) -->

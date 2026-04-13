@@ -230,6 +230,9 @@ function showSpotDetail(spot) {
         <button class="wire-btn primary" onclick="${spot.spotType === 'item' ? `openDetail(${spot.id})` : "alert('매장 상세 정보를 불러오는 중입니다...')"}">
             ${spot.spotType === 'item' ? '물품 상세보기' : '매장 소식 보기'}
         </button>
+        <button class="wire-btn secondary outline" style="margin-top: 8px;" onclick="startWalkingRoute(${spot.x}, ${spot.y}, '${spot.name}')">
+            도보 경로 안내 시작
+        </button>
     `;
 
     content.innerHTML = detailHTML;
@@ -832,5 +835,159 @@ function sendMessage() {
         container.appendChild(messageDiv);
         input.value = '';
         container.scrollTop = container.scrollHeight;
+    }
+}
+
+// --- Map Search & Walking Route Logic ---
+
+function handleMapSearch() {
+    const input = document.getElementById('map-search-input');
+    const keyword = input.value.trim().toLowerCase();
+    if (!keyword) {
+        filterMap('all');
+        return;
+    }
+    
+    // Simple filter logic for mock
+    let allMatches = [];
+    partnerStores.forEach(s => {
+        if (s.name.toLowerCase().includes(keyword) || s.description.toLowerCase().includes(keyword)) {
+            allMatches.push({ ...s, spotType: 'store' });
+        }
+    });
+    products.forEach((p, index) => {
+        if (p.title.toLowerCase().includes(keyword) || p.description.toLowerCase().includes(keyword)) {
+            allMatches.push({
+                id: p.id,
+                name: p.title,
+                type: 'item',
+                x: 10 + (index * 18),
+                y: 15 + ((index % 3) * 25),
+                spotType: 'item',
+                price: p.price,
+                description: p.description
+            });
+        }
+    });
+
+    const container = document.getElementById('map-container');
+    if (!container) return;
+    const pins = container.querySelectorAll('.eco-pin:not(.my-loc-pin)');
+    pins.forEach(p => p.remove());
+
+    allMatches.forEach(spot => {
+        const pin = document.createElement('div');
+        pin.className = `eco-pin ${spot.type}-pin`;
+        pin.style.left = `${spot.x}%`;
+        pin.style.top = `${spot.y}%`;
+        
+        const icon = spot.type === 'item' ? '📦' : spot.type === 'partner' ? '🌿' : '♻️';
+        pin.innerHTML = `<span>${icon}</span>`;
+        
+        pin.onclick = (e) => {
+            e.stopPropagation();
+            showSpotDetail(spot);
+            document.querySelectorAll('.eco-pin').forEach(p => p.classList.remove('active'));
+            pin.classList.add('active');
+        };
+        
+        container.appendChild(pin);
+    });
+    
+    // Close detail card
+    const card = document.getElementById('spot-detail-card');
+    if (card) card.classList.remove('active');
+}
+
+let routingInterval = null;
+
+function startWalkingRoute(targetX, targetY, targetName) {
+    const card = document.getElementById('spot-detail-card');
+    if (card) card.classList.remove('active');
+    
+    const overlay = document.getElementById('walking-nav-overlay');
+    if (overlay) overlay.classList.add('active');
+    
+    // Mock user location
+    const myPin = document.getElementById('my-location-pin');
+    let userX = Math.max(5, targetX - 25 + Math.random() * 10);
+    let userY = Math.max(5, targetY - 25 + Math.random() * 10);
+    
+    if (myPin) {
+        myPin.style.display = 'flex';
+        myPin.style.left = `${userX}%`;
+        myPin.style.top = `${userY}%`;
+    }
+    
+    const distText = document.getElementById('nav-dist-text');
+    
+    drawRouteLine(userX, userY, targetX, targetY);
+    
+    if (routingInterval) clearInterval(routingInterval);
+    
+    routingInterval = setInterval(() => {
+        // Move towards target
+        userX += (targetX - userX) * 0.08;
+        userY += (targetY - userY) * 0.08;
+        
+        if (myPin) {
+            myPin.style.left = `${userX}%`;
+            myPin.style.top = `${userY}%`;
+        }
+        
+        drawRouteLine(userX, userY, targetX, targetY);
+        
+        // Calculate mock distance left
+        const dist = Math.sqrt(Math.pow(targetX - userX, 2) + Math.pow(targetY - userY, 2));
+        const meters = Math.max(0, Math.floor(dist * 15));
+        const minutes = Math.max(1, Math.ceil(meters / 80));
+        
+        if (distText) {
+            if (meters < 15) {
+                distText.innerHTML = `<span style="color:var(--primary-green);">목적지에 도착했습니다!</span>`;
+                clearInterval(routingInterval);
+            } else {
+                distText.textContent = `남은 거리 ${meters}m (약 ${minutes}분)`;
+            }
+        }
+    }, 1000);
+}
+
+function drawRouteLine(x1, y1, x2, y2) {
+    const svg = document.getElementById('route-svg');
+    if (!svg) return;
+    
+    const container = document.getElementById('map-container');
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    
+    const px1 = (x1 / 100) * w;
+    const py1 = (y1 / 100) * h;
+    const px2 = (x2 / 100) * w;
+    const py2 = (y2 / 100) * h;
+    
+    // Draw a dashed path
+    svg.innerHTML = `
+        <svg style="width:100%; height:100%;">
+            <path d="M ${px1} ${py1} C ${(px1+px2)/2} ${py1}, ${(px1+px2)/2} ${py2}, ${px2} ${py2}" 
+                  fill="none" stroke="var(--primary-green)" stroke-width="4" stroke-dasharray="8,8" />
+            <circle cx="${px2}" cy="${py2}" r="6" fill="var(--primary-green)" />
+        </svg>
+    `;
+}
+
+function stopWalkingRoute() {
+    const overlay = document.getElementById('walking-nav-overlay');
+    if (overlay) overlay.classList.remove('active');
+    
+    const myPin = document.getElementById('my-location-pin');
+    if (myPin) myPin.style.display = 'none';
+    
+    const svg = document.getElementById('route-svg');
+    if (svg) svg.innerHTML = '';
+    
+    if (routingInterval) {
+        clearInterval(routingInterval);
+        routingInterval = null;
     }
 }
