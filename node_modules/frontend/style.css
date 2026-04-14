@@ -1931,7 +1931,7 @@ section {
 
 .map-filters {
     position: absolute;
-    top: 60px;
+    top: 8px;
     left: 0;
     right: 0;
     display: flex;
@@ -2065,7 +2065,7 @@ section {
 /* --- Walking Route & Navigation Overlay --- */
 .walking-nav-overlay {
     position: absolute;
-    top: 60px;
+    top: 8px;
     left: 20px;
     right: 20px;
     background-color: var(--white);
