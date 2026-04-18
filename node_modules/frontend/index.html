@@ -329,6 +329,14 @@
                         <button class="filter-btn" onclick="filterMap('zero')">제로웨이스트</button>
                     </div>
 
+                    <!-- Radius Filter Pill -->
+                    <div class="radius-filter-pill">
+                        <span class="radius-icon">📍 반경</span>
+                        <input type="range" id="radius-slider" min="10" max="100" value="100" step="10" class="radius-slider" oninput="updateRadius(this.value)" onchange="applyRadiusFilter()">
+                        <span class="radius-value" id="radius-value-display">전체</span>
+                        <button class="my-loc-btn" onclick="centerMyLocation()">🎯</button>
+                    </div>
+
                     <!-- Map Container (Stylized) -->
                     <div id="map-container" class="map-container">
                         <div class="eco-grid" id="eco-grid-bg"></div>

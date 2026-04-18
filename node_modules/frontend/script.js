@@ -138,6 +138,31 @@ function toggleView(viewId) {
 }
 
 let activeMapFilter = 'all';
+const userLoc = { x: 50, y: 50 };
+let currentRadius = 100;
+
+function updateRadius(val) {
+    const display = document.getElementById('radius-value-display');
+    if (val >= 100) {
+        display.textContent = '전체';
+    } else {
+        const km = (val / 20).toFixed(1);
+        display.textContent = `${km}km`;
+    }
+}
+
+function applyRadiusFilter() {
+    currentRadius = parseInt(document.getElementById('radius-slider').value);
+    renderEcoMap(activeMapFilter); 
+}
+
+function centerMyLocation() {
+    const pin = document.getElementById('my-location-pin');
+    if (pin) {
+        pin.style.transform = 'rotate(-45deg) scale(1.5)';
+        setTimeout(() => pin.style.transform = 'rotate(-45deg) scale(1)', 300);
+    }
+}
 
 function filterMap(category) {
     activeMapFilter = category;
@@ -154,9 +179,39 @@ function renderEcoMap(category) {
     const container = document.getElementById('map-container');
     if (!container) return;
     
-    // Clear existing pins but keep the grid
-    const pins = container.querySelectorAll('.eco-pin');
+    // Clear existing pins but keep the grid and my location
+    const pins = container.querySelectorAll('.eco-pin:not(.my-loc-pin)');
     pins.forEach(p => p.remove());
+
+    let myLocPin = document.getElementById('my-location-pin');
+    if (myLocPin) {
+        myLocPin.style.display = 'flex';
+        myLocPin.style.left = `${userLoc.x}%`;
+        myLocPin.style.top = `${userLoc.y}%`;
+    }
+
+    let radiusCircle = document.getElementById('radius-circle-vis');
+    if (!radiusCircle) {
+        radiusCircle = document.createElement('div');
+        radiusCircle.id = 'radius-circle-vis';
+        radiusCircle.style.position = 'absolute';
+        radiusCircle.style.borderRadius = '50%';
+        radiusCircle.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+        radiusCircle.style.border = '2px dashed rgba(16, 185, 129, 0.4)';
+        radiusCircle.style.pointerEvents = 'none';
+        container.insertBefore(radiusCircle, container.firstChild);
+    }
+    
+    if (currentRadius >= 100) {
+        radiusCircle.style.display = 'none';
+    } else {
+        radiusCircle.style.display = 'block';
+        radiusCircle.style.width = `${currentRadius * 2}%`;
+        radiusCircle.style.height = `${currentRadius * 2}%`;
+        radiusCircle.style.transform = 'translate(-50%, -50%)';
+        radiusCircle.style.left = `${userLoc.x}%`;
+        radiusCircle.style.top = `${userLoc.y}%`;
+    }
 
     const combinedSpots = [];
 
@@ -186,6 +241,12 @@ function renderEcoMap(category) {
     }
 
     combinedSpots.forEach(spot => {
+        // Distance check
+        const dist = Math.sqrt(Math.pow(spot.x - userLoc.x, 2) + Math.pow(spot.y - userLoc.y, 2));
+        if (currentRadius < 100 && dist > currentRadius) {
+            return;
+        }
+
         const pin = document.createElement('div');
         pin.className = `eco-pin ${spot.type}-pin`;
         pin.style.left = `${spot.x}%`;
