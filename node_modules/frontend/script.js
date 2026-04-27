@@ -138,8 +138,43 @@ function toggleView(viewId) {
 }
 
 let activeMapFilter = 'all';
-const userLoc = { x: 50, y: 50 };
+let userLoc = JSON.parse(localStorage.getItem('userLoc')) || { x: 50, y: 50 };
+let userAddress = localStorage.getItem('userAddress') || '';
 let currentRadius = 100;
+
+function execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            userAddress = data.roadAddress || data.jibunAddress;
+            // Generate deterministic loc 20 to 80 based on string length to simulate different locations
+            const dummyX = 20 + ((userAddress.length * 7) % 60);
+            const dummyY = 20 + ((userAddress.length * 11) % 60);
+            userLoc = { x: dummyX, y: dummyY };
+            
+            localStorage.setItem('userAddress', userAddress);
+            localStorage.setItem('userLoc', JSON.stringify(userLoc));
+            
+            updateMyPageStats();
+            if (document.getElementById('home-view').classList.contains('active')) {
+                renderProductGrid(products);
+            }
+            if (document.getElementById('map-view').classList.contains('active')) {
+                renderEcoMap(activeMapFilter);
+            }
+        }
+    }).open();
+}
+
+function getDistanceText(targetX, targetY) {
+    if (!userAddress) return "";
+    const distUnits = Math.sqrt(Math.pow(targetX - userLoc.x, 2) + Math.pow(targetY - userLoc.y, 2));
+    const distMeters = Math.round(distUnits * 50); // 1 unit = 50m
+    if (distMeters < 1000) {
+        return `도보 ${distMeters}m`;
+    } else {
+        return `도보 ${(distMeters / 1000).toFixed(1)}km`;
+    }
+}
 
 function updateRadius(val) {
     const display = document.getElementById('radius-value-display');
@@ -305,6 +340,7 @@ const products = [
         id: 0,
         title: "빈티지 조명",
         price: "2500",
+        x: 48, y: 52,
         isUserOwned: true,
         recipientName: "이지오",
         description: "상태 좋은 빈티지 조명입니다. 이사가게 되어 더 이상 필요하지 않아 나눔합니다. 실사용 기간은 1년 정도이며, 따뜻한 노란색 조명이 들어와서 방 분위기를 무드 있게 만들어줍니다. 인하대 정문 쪽에서 직거래 희망합니다!",
@@ -314,6 +350,7 @@ const products = [
         id: 1,
         title: "친환경 수세미",
         price: "500",
+        x: 60, y: 40,
         isUserOwned: true,
         recipientName: "김애리",
         description: "천연 삼베로 직접 만든 친환경 수세미입니다. 세제 없이도 기름기가 잘 닦이고 미세 플라스틱 걱정이 없습니다. 새 제품 3개 세트입니다.",
@@ -323,6 +360,7 @@ const products = [
         id: 2,
         title: "리유저블 컵",
         price: "1200",
+        x: 55, y: 35,
         isUserOwned: true,
         recipientName: "박준혁",
         description: "카페에서 받은 튼튼한 리유저블 컵입니다. 깨끗하게 세척 완료했으며, 뜨거운 음료도 가능합니다. 다회용 컵 사용으로 지구를 지켜요!",
@@ -332,6 +370,7 @@ const products = [
         id: 3,
         title: "에코백",
         price: "800",
+        x: 42, y: 58,
         description: "튼튼한 캔버스 재질의 에코백입니다. A4 사이즈 노트북도 넉넉히 들어가는 크기예요. 거의 사용하지 않아 새것 같습니다.",
         stats: { likes: 15, views: 312, chats: 5 }
     },
@@ -339,6 +378,7 @@ const products = [
         id: 4,
         title: "유리 반찬통",
         price: "1500",
+        x: 38, y: 45,
         description: "내열 유리로 제작된 반찬통입니다. 500ml 용량이며 오븐이나 전자레인지 사용이 가능합니다. 깨끗하게 소독해 두었습니다.",
         stats: { likes: 4, views: 76, chats: 0 }
     },
@@ -346,6 +386,7 @@ const products = [
         id: 5,
         title: "스텐 빨대",
         price: "300",
+        x: 65, y: 60,
         description: "세척 솔이 포함된 스테인리스 빨대 세트입니다. 일회용 플라스틱 빨대 대신 사용해 보세요. 위생적이고 반영구적입니다.",
         stats: { likes: 20, views: 420, chats: 8 }
     },
@@ -353,6 +394,7 @@ const products = [
         id: 6,
         title: "대나무 칫솔",
         price: "400",
+        x: 40, y: 30,
         description: "낱개 포장된 미개봉 대나무 칫솔입니다. 생분해되는 소재로 환경에 무해합니다. 여행용이나 손님용으로 추천드려요.",
         stats: { likes: 6, views: 102, chats: 2 }
     },
@@ -360,6 +402,7 @@ const products = [
         id: 7,
         title: "고체 샴푸바",
         price: "1000",
+        x: 70, y: 48,
         description: "플라스틱 용기가 없는 고체 샴푸입니다. 약산성 소재로 두피에 자극이 없고 세정력이 좋습니다. 새 제품입니다.",
         stats: { likes: 10, views: 245, chats: 4 }
     },
@@ -367,6 +410,7 @@ const products = [
         id: 8,
         title: "천연 비누",
         price: "600",
+        x: 45, y: 65,
         description: "핸드메이드 어성초 비누입니다. 여드름이나 민감성 피부에 좋습니다. 인공 향료가 들어가지 않은 순한 제품입니다.",
         stats: { likes: 7, views: 134, chats: 1 }
     }
@@ -389,7 +433,7 @@ function renderProductGrid(items, gridId = 'item-grid') {
             <h4 class="item-title">${product.title}</h4>
             ${gridId === 'shared-item-grid' && product.recipientName 
                 ? `<p class="item-recipient" style="font-size: 11px; color: var(--primary-green); margin-top: 4px;">나눔 완료: ${product.recipientName}님</p>`
-                : `<p class="item-price">${product.price} 크레딧</p>`}
+                : `<p class="item-price">${product.price} 크레딧</p>${userAddress ? `<p class="item-distance" style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${getDistanceText(product.x, product.y)}</p>` : ''}`}
         `;
         grid.appendChild(itemCard);
     });
@@ -401,6 +445,10 @@ function openDetail(id) {
     currentProductId = id;
     document.getElementById('detail-title').textContent = product.title;
     document.getElementById('detail-price').innerHTML = `${product.price} <span class="unit">크레딧</span>`;
+    const distanceTextEl = document.getElementById('detail-distance-text');
+    if (distanceTextEl) {
+        distanceTextEl.textContent = userAddress ? getDistanceText(product.x, product.y) : '등록된 주소 없음';
+    }
     document.getElementById('detail-description-text').innerHTML = product.description.replace(/\n/g, '<br>');
     const statsContainer = document.querySelector('.product-stats');
     if (statsContainer) {
@@ -755,6 +803,10 @@ function updateMyPageStats() {
     const countEl = document.getElementById('mypage-likes-count');
     if (countEl) {
         countEl.textContent = likedItemIds.length;
+    }
+    const addressEl = document.getElementById('user-address-text');
+    if (addressEl) {
+        addressEl.textContent = userAddress ? `현재 동네: ${userAddress}` : '등록된 주소가 없습니다. 동네를 등록하고 거리를 확인해보세요.';
     }
 }
 

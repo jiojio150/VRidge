@@ -6,6 +6,7 @@
     <title>EcoBid - Wireframe</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
     <div class="container">
@@ -395,6 +396,14 @@
                     <h2>김나현</h2>
                     <p class="profile-date">레벨 5 . 2026년 4월 8일부터 활동중</p>
                     
+                    <div class="profile-address-container" style="margin-top: 15px; padding: 15px; background: rgba(16, 185, 129, 0.05); border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); margin: 0;">📍 나의 동네 설정</h3>
+                            <button class="wire-btn small-btn outline-green" style="padding: 4px 10px; font-size: 12px; border-radius: 6px;" onclick="execDaumPostcode()">주소 변경</button>
+                        </div>
+                        <p id="user-address-text" style="font-size: 13px; color: var(--text-muted); margin: 0; word-break: keep-all; line-height: 1.4;">등록된 주소가 없습니다. 동네를 등록하고 거리를 확인해보세요.</p>
+                    </div>
+
                     <div class="profile-progress-container">
                         <p class="progress-label">레벨 6까지 남은 경험치</p>
                         <div class="progress-track">
@@ -688,7 +697,7 @@
                         <div class="seller-avatar"></div>
                         <div class="seller-details">
                             <p class="seller-name">김나현</p>
-                            <p class="seller-meta">레벨 5 . 인하대 정문 인근</p>
+                            <p class="seller-meta">레벨 5 . <span id="detail-distance-text">거리 계산중...</span></p>
                         </div>
                         <div class="seller-rank">
                             <span class="rank-label">매너 온도</span>
