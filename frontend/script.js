@@ -806,7 +806,11 @@ function updateMyPageStats() {
     }
     const addressEl = document.getElementById('user-address-text');
     if (addressEl) {
-        addressEl.textContent = userAddress ? `현재 동네: ${userAddress}` : '등록된 주소가 없습니다. 동네를 등록하고 거리를 확인해보세요.';
+        if (userAddress) {
+            addressEl.innerHTML = `<span style="color: var(--primary-green); font-weight: 800; margin-right: 6px; font-size: 13px;">현재 동네</span> <span style="color: var(--text-main);">${userAddress}</span>`;
+        } else {
+            addressEl.innerHTML = `등록된 주소가 없습니다.<br><span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; display: inline-block;">동네를 등록하고 거리를 확인해보세요.</span>`;
+        }
     }
 }
 

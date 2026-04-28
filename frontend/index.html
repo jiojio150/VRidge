@@ -396,12 +396,19 @@
                     <h2>김나현</h2>
                     <p class="profile-date">레벨 5 . 2026년 4월 8일부터 활동중</p>
                     
-                    <div class="profile-address-container" style="margin-top: 15px; padding: 15px; background: rgba(16, 185, 129, 0.05); border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+                    <div class="profile-address-container" style="margin-top: 20px; padding: 18px; background: linear-gradient(145deg, #f0fdf4 0%, #d1fae5 100%); border-radius: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); margin: 0;">📍 나의 동네 설정</h3>
-                            <button class="wire-btn small-btn outline-green" style="padding: 4px 10px; font-size: 12px; border-radius: 6px;" onclick="execDaumPostcode()">주소 변경</button>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="background: var(--white); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                    <span style="font-size: 16px;">📍</span>
+                                </div>
+                                <h3 style="font-size: 15px; font-weight: 800; color: var(--primary-green-dark); margin: 0; letter-spacing: -0.3px;">나의 동네 설정</h3>
+                            </div>
+                            <button class="wire-btn" style="padding: 6px 14px; font-size: 13px; border-radius: 8px; border: none; background-color: var(--primary-green); color: white; font-weight: 700; box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3); width: auto; margin: 0;" onclick="execDaumPostcode()">주소 변경</button>
                         </div>
-                        <p id="user-address-text" style="font-size: 13px; color: var(--text-muted); margin: 0; word-break: keep-all; line-height: 1.4;">등록된 주소가 없습니다. 동네를 등록하고 거리를 확인해보세요.</p>
+                        <div style="background: var(--white); padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                            <p id="user-address-text" style="font-size: 14px; color: #374151; margin: 0; text-align: left; word-break: keep-all; overflow-wrap: break-word; line-height: 1.5; font-weight: 600;"></p>
+                        </div>
                     </div>
 
                     <div class="profile-progress-container">
