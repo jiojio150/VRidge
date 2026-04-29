@@ -36,9 +36,9 @@ const partnerStores = [
 
 window.onload = async function() {
     const user = localStorage.getItem('user');
-    if (user) {
-        toggleView('home-view');
-    }
+    // if (user) {
+    //     toggleView('home-view');
+    // }
     await loadProducts();
     renderHomeMissions();
     renderMissionList();
